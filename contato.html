@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WK61JGEQ65"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WK61JGEQ65');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapecoense Futsal - Contato e Localização</title>
+    <meta name="description"
+        content="Entre em contato com a Associação Chapecoense de Futsal. Endereço, telefone, e-mail e formulário de contato.">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="icon" href="images/logomarca.webp" type="image/webp">
+    <meta property="og:image" content="images/logomarca.webp">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-logo">
+                <img src="images/logomarca.webp" alt="Chapecoense Futsal" width="40" height="40">
+                <span>Chapecoense Futsal</span>
+            </a>
+            <nav class="nav-links" id="nav-links">
+                <a href="index.html">Início</a>
+                <a href="historia.html">O Clube</a>
+                <a href="elenco.html" style="display:none;">Elenco</a>
+                <a href="competicoes.html">Competições</a>
+                <a href="transparencia.html">Transparência</a>
+                <a href="contato.html" class="active">Contato</a>
+                <a href="https://chapefutsal.socioclube.com.br/associe-se.aspx" target="_blank"
+                    class="btn btn--primary btn--sm nav-cta">Seja Sócio</a>
+            </nav>
+            <div class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero hero--compact">
+        <div class="hero__bg">
+            <img src="images/fotos/contato-banner.webp" alt="Entre em contato com a Chapecoense Futsal"
+                style="width:100%;height:100%;object-fit:cover;object-position:center 35%;">
+        </div>
+        <!-- overlay verde com granulado -->
+        <div style="position:absolute;inset:0;z-index:1;">
+            <div
+                style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,77,45,0.65) 0%,rgba(0,107,63,0.45) 100%);">
+            </div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;opacity:0.55;"
+                xmlns="http://www.w3.org/2000/svg">
+                <filter id="grain">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" />
+                    <feColorMatrix type="saturate" values="0" />
+                    <feBlend in="SourceGraphic" mode="multiply" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#grain)" opacity="1" />
+            </svg>
+        </div>
+        <div class="hero__overlay" style="background:rgba(0,0,0,0.1);"></div>
+        <div class="hero__content"
+            style="text-align:center;max-width:100%;position:relative;z-index:2;padding-top:var(--space-20);padding-bottom:var(--space-12);">
+            <h1 class="hero__title"
+                style="max-width:100%;margin:0 auto var(--space-4);text-shadow: 0 4px 12px rgba(0,0,0,0.5);">Fale
+                Conosco</h1>
+            <p class="hero__subtitle" style="max-width:700px;margin:0 auto;font-weight:400;opacity:1;">Estamos prontos
+                para atender você. Entre em
+                contato para dúvidas sobre ingressos, sócio torcedor ou parcerias.</p>
+        </div>
+    </section>
+
+    <!-- FORMULÁRIO + INFORMAÇÕES -->
+    <section class="section">
+        <div class="container">
+            <div style="max-width:700px;margin:0 auto;">
+
+                <!-- Formulário - OCULTO -->
+                <div data-animate style="display:none;">
+                    <div class="section-header" style="margin-bottom:var(--space-8);">
+                        <div class="section-header__label">Mensagem</div>
+                        <h2 class="section-header__title">Envie sua mensagem</h2>
+                    </div>
+
+                    <form id="contact-form" style="display:flex;flex-direction:column;gap:var(--space-5);">
+                        <div class="form-group">
+                            <label for="contact-name">Nome completo</label>
+                            <input type="text" id="contact-name" class="form-input" placeholder="Seu nome" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-email">E-mail</label>
+                            <input type="email" id="contact-email" class="form-input" placeholder="seu@email.com"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-subject">Assunto</label>
+                            <select id="contact-subject" class="form-select" required>
+                                <option value="">Selecione um assunto</option>
+                                <option value="ingressos">Ingressos</option>
+                                <option value="socio">Sócio Torcedor</option>
+                                <option value="parceria">Parceria / Patrocínio</option>
+                                <option value="imprensa">Imprensa</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-message">Mensagem</label>
+                            <textarea id="contact-message" class="form-textarea"
+                                placeholder="Escreva sua mensagem aqui..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--lg btn--mobile-full"
+                            style="align-self:flex-start;">
+                            <span class="material-icons-outlined" style="font-size:20px;">send</span>
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Informações -->
+                <div data-animate data-delay="200">
+                    <div class="section-header" style="margin-bottom:var(--space-8);">
+                        <div class="section-header__label">Informações</div>
+                        <h2 class="section-header__title">Informações de Contato</h2>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:var(--space-5);">
+                        <!-- Endereço -->
+                        <div class="contact-info-card">
+                            <div class="contact-info-card__icon">
+                                <span class="material-icons-outlined">place</span>
+                            </div>
+                            <div>
+                                <div class="contact-info-card__title">Endereço</div>
+                                Rua Guaporé, nº 1.454 D<br>
+                                Bairro Presidente Médici<br>
+                                Chapecó - SC, CEP: 89.805-070
+                                <a href="https://maps.google.com/?q=Ginásio+Plínio+Arlindo+De+Nes+Chapecó+SC"
+                                    target="_blank" rel="noopener"
+                                    style="font-size:var(--font-size-sm);font-weight:600;color:var(--color-green);margin-top:var(--space-2);display:inline-block;">
+                                    Ver no mapa →
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- E-mail -->
+                        <div class="contact-info-card">
+                            <div class="contact-info-card__icon"
+                                style="background:var(--color-primary-bg);color:var(--color-primary);">
+                                <span class="material-icons-outlined">email</span>
+                            </div>
+                            <div>
+                                <div class="contact-info-card__title">E-mail</div>
+                                <div class="contact-info-card__text">
+                                    Geral: <a href="mailto:juridico@chapefutsal.com.br"
+                                        style="color:var(--color-green);">juridico@chapefutsal.com.br</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Telefone -->
+                        <div class="contact-info-card">
+                            <div class="contact-info-card__icon">
+                                <span class="material-icons-outlined">phone</span>
+                            </div>
+                            <div>
+                                <div class="contact-info-card__title">Telefone</div>
+                                <div class="contact-info-card__text">(49) 9 8834-8459</div>
+                            </div>
+                        </div>
+
+                        <!-- Horário -->
+                        <div class="contact-info-card">
+                            <div class="contact-info-card__icon"
+                                style="background:var(--color-primary-bg);color:var(--color-primary);">
+                                <span class="material-icons-outlined">schedule</span>
+                            </div>
+                            <div>
+                                <div class="contact-info-card__title">Horário de Atendimento</div>
+                                <div class="contact-info-card__text">
+                                    Segunda a Sexta: 14h00 às 17h00<br>
+                                    <em style="font-size:12px;color:var(--color-text-light);">Em dias de jogos, o
+                                        horário pode sofrer alterações.</em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAPA -->
+    <section class="section section--alt">
+        <div class="container">
+            <div class="section-header section-header--center" data-animate>
+                <div class="section-header__label" style="justify-content:center;">Localização</div>
+                <h2 class="section-header__title">Nossa Casa</h2>
+            </div>
+
+            <div class="map-wrapper" data-animate>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3547.0!2d-52.6367!3d-27.0975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDA1JzUxLjAiUyA1MsKwMzgnMTIuMSJX!5e0!3m2!1spt-BR!2sbr!4v1"
+                    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" title="Mapa - Ginásio Plínio Arlindo De Nes">
+                </iframe>
+            </div>
+
+            <div style="text-align:center;margin-top:var(--space-6);" data-animate>
+                <a href="https://maps.google.com/?q=Ginásio+Plínio+Arlindo+De+Nes+Chapecó+SC" target="_blank"
+                    rel="noopener" class="btn btn--secondary">
+                    <span class="material-icons-outlined" style="font-size:18px;">map</span>
+                    Abrir no Google Maps
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- REDES SOCIAIS -->
+    <section class="section">
+        <div class="container text-center">
+            <div class="section-header section-header--center" data-animate>
+                <div class="section-header__label" style="justify-content:center;">Conecte-se</div>
+                <h2 class="section-header__title">Siga a Chape nas redes</h2>
+            </div>
+
+            <div style="display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap;" data-animate>
+                <a href="https://www.instagram.com/achapefutsal/" target="_blank"
+                    class="btn btn--secondary btn--lg btn--mobile-full">
+                    <span class="material-icons-outlined" style="font-size:20px;">photo_camera</span>
+                    Instagram
+                </a>
+                <a href="https://www.youtube.com/@ChapeFutsal" target="_blank"
+                    class="btn btn--secondary btn--lg btn--mobile-full">
+                    <span class="material-icons-outlined" style="font-size:20px;">play_circle</span>
+                    YouTube
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand__logo">
+                        <img src="images/logomarca-branco.webp" alt="Chapecoense Futsal" width="36" height="36">
+                        Chapecoense Futsal
+                    </div>
+                    <p class="footer-brand__text">A Associação Chapecoense de Futsal promove o esporte e a paixão em
+                        Chapecó. Junte-se à nossa torcida.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/achapefutsal/" target="_blank" aria-label="Instagram"><span
+                                class="material-icons-outlined">photo_camera</span></a>
+                        <a href="https://www.youtube.com/@ChapeFutsal" target="_blank" aria-label="YouTube"><span
+                                class="material-icons-outlined">play_circle</span></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Links Rápidos</h4>
+                    <ul>
+                        <li><a href="https://chapefutsal.socioclube.com.br/associe-se.aspx" target="_blank">Seja
+                                Sócio</a></li>
+                        <li><a href="#">Ingressos Online</a></li>
+                        <li><a href="competicoes.html">Tabela de Jogos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Newsletter</h4>
+                    <p style="font-size:var(--font-size-sm);opacity:0.7;line-height:1.5;">Receba notícias e promoções
+                        exclusivas do clube.</p>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Contato</h4>
+                    <ul>
+                        <li class="footer-contact-item">
+                            <span class="material-icons-outlined">place</span>
+                            Rua Guaporé, nº 1.454 D<br>Chapecó, SC
+                        </li>
+                        <li class="footer-contact-item">
+                            <span class="material-icons-outlined">email</span>
+                            juridico@chapefutsal.com.br
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2025 Associação Chapecoense de Futsal. Todos os direitos reservados.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

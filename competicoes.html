@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WK61JGEQ65"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WK61JGEQ65');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapecoense Futsal - Competições Ativas</title>
+    <meta name="description"
+        content="Acompanhe a Chapecoense Futsal nas competições: Liga Nacional, Catarinense Série Ouro e Copa do Brasil de Futsal.">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="icon" href="images/logomarca.webp" type="image/webp">
+    <meta property="og:image" content="images/logomarca.webp">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-logo">
+                <img src="images/logomarca.webp" alt="Chapecoense Futsal" width="40" height="40">
+                <span>Chapecoense Futsal</span>
+            </a>
+            <nav class="nav-links" id="nav-links">
+                <a href="index.html">Início</a>
+                <a href="historia.html">O Clube</a>
+                <a href="elenco.html" style="display:none;">Elenco</a>
+                <a href="competicoes.html" class="active">Competições</a>
+                <a href="transparencia.html">Transparência</a>
+                <a href="contato.html">Contato</a>
+                <a href="https://chapefutsal.socioclube.com.br/associe-se.aspx" target="_blank"
+                    class="btn btn--primary btn--sm nav-cta">Seja Sócio</a>
+            </nav>
+            <div class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero hero--compact">
+        <div class="hero__bg">
+            <img src="images/fotos/IMG_4346.webp" alt="Chapecoense Futsal"
+                style="width:100%;height:100%;object-fit:cover;object-position:center 15%;">
+        </div>
+        <!-- overlay verde com granulado -->
+        <div style="position:absolute;inset:0;z-index:1;">
+            <div
+                style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,77,45,0.65) 0%,rgba(0,107,63,0.45) 100%);">
+            </div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;opacity:0.55;"
+                xmlns="http://www.w3.org/2000/svg">
+                <filter id="grain">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" />
+                    <feColorMatrix type="saturate" values="0" />
+                    <feBlend in="SourceGraphic" mode="multiply" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#grain)" opacity="1" />
+            </svg>
+        </div>
+        <div class="hero__overlay" style="background:rgba(0,0,0,0.1);"></div>
+        <div class="hero__content" style="text-align:center;max-width:100%;position:relative;z-index:2;">
+            <div class="hero__badge" style="margin:0 auto var(--space-6);">
+                <span class="material-icons-outlined" style="font-size:16px;">emoji_events</span>
+                Temporada 2026
+            </div>
+            <h1 class="hero__title" style="max-width:100%;margin:0 auto var(--space-4);">Competições Ativas</h1>
+            <p class="hero__subtitle" style="max-width:700px;margin:0 auto;">Acompanhe a Chapecoense Futsal em busca da
+                glória. Conheça os campeonatos que estamos disputando e confira as tabelas e classificações.</p>
+        </div>
+    </section>
+
+    <!-- COMPETIÇÕES -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header section-header--center" data-animate>
+                <div class="section-header__label" style="justify-content:center;">Campeonatos</div>
+                <h2 class="section-header__title">Nossos Desafios</h2>
+                <p class="section-header__subtitle">Em 2026, a equipe principal da Chape Futsal disputa o Campeonato
+                    Brasileiro de Futsal, Campeonato Catarinense Série Ouro e Copa Santa Catarina. Além das competições
+                    disputadas pelas categorias de base.</p>
+            </div>
+
+            <div class="grid grid-3 gap-8">
+                <!-- Liga Nacional -->
+                <div class="comp-card" data-animate data-delay="100">
+                    <div class="comp-card__badge">
+                        <span class="material-icons-outlined" style="font-size:14px;">emoji_events</span>
+                        Nacional
+                    </div>
+                    <div
+                        style="width:64px;height:64px;border-radius:var(--radius-lg);background:var(--gradient-gold);display:flex;align-items:center;justify-content:center;color:#fff;">
+                        <span class="material-icons-outlined" style="font-size:32px;">emoji_events</span>
+                    </div>
+                    <h3 class="comp-card__title">Campeonato Brasileiro de Futsal</h3>
+                    <p class="comp-card__text">Pela primeira vez na história, a Chape Futsal disputa o Campeonato
+                        Brasileiro de Futsal, enfrentando as melhores equipes do país.</p>
+                    <a href="https://www.cbfs.com.br/" target="_blank" rel="noopener" class="btn btn--secondary">
+                        Acessar Site Oficial
+                        <span class="material-icons-outlined" style="font-size:16px;">open_in_new</span>
+                    </a>
+                </div>
+
+                <!-- Catarinense -->
+                <div class="comp-card" data-animate data-delay="200">
+                    <div class="comp-card__badge" style="background:var(--color-green-bg);color:var(--color-green);">
+                        <span class="material-icons-outlined" style="font-size:14px;">shield</span>
+                        Estadual
+                    </div>
+                    <div
+                        style="width:64px;height:64px;border-radius:var(--radius-lg);background:var(--gradient-green);display:flex;align-items:center;justify-content:center;color:#fff;">
+                        <span class="material-icons-outlined" style="font-size:32px;">shield</span>
+                    </div>
+                    <h3 class="comp-card__title">Catarinense Série Ouro</h3>
+                    <p class="comp-card__text">A elite do futsal de Santa Catarina. Disputa acirrada entre as potências
+                        do estado para definir o campeão catarinense.</p>
+                    <a href="https://futsalsc.com.br/" target="_blank" rel="noopener" class="btn btn--secondary">
+                        Ver Tabela
+                        <span class="material-icons-outlined" style="font-size:16px;">open_in_new</span>
+                    </a>
+                </div>
+
+                <div class="comp-card" data-animate data-delay="300">
+                    <div class="comp-card__badge">
+                        <span class="material-icons-outlined" style="font-size:14px;">military_tech</span>
+                        Estadual
+                    </div>
+                    <div
+                        style="width:64px;height:64px;border-radius:var(--radius-lg);background:linear-gradient(135deg,#7d540d,#006b3f);display:flex;align-items:center;justify-content:center;color:#fff;">
+                        <span class="material-icons-outlined" style="font-size:32px;">military_tech</span>
+                    </div>
+                    <h3 class="comp-card__title">Copa Santa Catarina</h3>
+                    <p class="comp-card__text">Competição estadual que reúne as principais equipes catarinenses em
+                        confrontos emocionantes pela taça.</p>
+                    <a href="https://www.futsalsc.com.br/" target="_blank" rel="noopener" class="btn btn--secondary">
+                        Acompanhar Jogos
+                        <span class="material-icons-outlined" style="font-size:16px;">open_in_new</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SÓCIO TORCEDOR -->
+    <section class="section">
+        <div class="container">
+            <div class="newsletter" data-animate style="background:var(--gradient-gold);">
+                <div class="newsletter__content" style="max-width:600px;">
+                    <h2 class="newsletter__title" style="font-size:var(--font-size-3xl);">Seja Sócio Torcedor</h2>
+                    <p class="newsletter__text" style="font-size:var(--font-size-base);opacity:0.9;">
+                        Apoie a Chapecoense Futsal em todas as competições e tenha acesso a benefícios exclusivos e
+                        descontos em ingressos.
+                    </p>
+                    <a href="https://chapefutsal.socioclube.com.br/associe-se.aspx" target="_blank"
+                        class="btn btn--white btn--lg">
+                        <span class="material-icons-outlined" style="font-size:20px;">card_membership</span>
+                        Quero ser Sócio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand__logo">
+                        <img src="images/logomarca-branco.webp" alt="Chapecoense Futsal" width="36" height="36">
+                        Chapecoense Futsal
+                    </div>
+                    <p class="footer-brand__text">A força do oeste catarinense nas quadras do Brasil.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/achapefutsal/" target="_blank" aria-label="Instagram"><span
+                                class="material-icons-outlined">photo_camera</span></a>
+                        <a href="https://www.youtube.com/@ChapeFutsal" target="_blank" aria-label="YouTube"><span
+                                class="material-icons-outlined">play_circle</span></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Navegação</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="historia.html">Sobre Nós</a></li>
+                        <li style="display:none;"><a href="elenco.html">Elenco</a></li>
+                        <li><a href="competicoes.html">Tabela de Jogos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Contato</h4>
+                    <ul>
+                        <li class="footer-contact-item">
+                            <span class="material-icons-outlined">place</span>
+                            Ginásio do SESC<br>Chapecó, SC
+                        </li>
+                        <li class="footer-contact-item">
+                            <span class="material-icons-outlined">email</span>
+                            juridico@chapefutsal.com.br
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Parceiros</h4>
+                    <ul>
+                        <li><a href="https://www.cbfs.com.br/" target="_blank">CBFS</a></li>
+                        <li><a href="https://futsalsc.com.br/" target="_blank">FCFS</a></li>
+                        <li><a href="https://www.cbfs.com.br/" target="_blank">CBFS</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Associação Chapecoense de Futsal. Todos os direitos reservados.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
