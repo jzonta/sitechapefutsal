@@ -276,7 +276,7 @@
 
       <div class="result-banner__content">
         <div class="result-banner__status">
-          Estreia no Brasileiro
+          Resultado Final
         </div>
         <div class="result-banner__league"
           style="font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase;">
@@ -292,7 +292,9 @@
           </div>
 
           <div class="result-banner__score-center">
-            <span class="result-banner__vs-text">VS</span>
+            <span class="result-banner__goal result-banner__goal--winner">3</span>
+            <span class="result-banner__score-divider">×</span>
+            <span class="result-banner__goal">0</span>
           </div>
 
           <div class="result-banner__team">
@@ -314,12 +316,6 @@
           </div>
         </div>
 
-        <div class="result-banner__cta-row">
-          <a href="https://ingressojogo.com.br/" target="_blank" rel="noopener" class="btn result-banner__cta">
-            <span class="material-icons-outlined" style="font-size: 20px;">confirmation_number</span>
-            Comprar ingressos
-          </a>
-        </div>
       </div>
     </section>
   </div>
@@ -339,40 +335,6 @@
             <span class="material-icons-outlined" style="font-size:14px;">emoji_events</span>
             Último Jogo
           </div>
-          <div class="game-card__league">Copa Santa Catarina de Futsal</div>
-          <div class="game-card__date">27 de Jun, 2026 — 17h</div>
-          <div class="game-card__match">
-            <div class="game-card__team">
-              <div class="game-card__team-logo" style="background:var(--color-green-bg);"><img
-                  src="images/escudos/chapecoense.webp" alt="Chapecoense Futsal"></div>
-              <div class="game-card__team-name">Chapecoense</div>
-            </div>
-            <div class="game-card__score">
-              <span class="game-card__goals">3</span>
-              <span class="game-card__vs">×</span>
-              <span class="game-card__goals">3</span>
-            </div>
-            <div class="game-card__team">
-              <div class="game-card__team-logo" style="background:transparent;"><img src="images/escudos/apaff.png" alt="Apaff Florianópolis"></div>
-              <div class="game-card__team-name">Apaff/Florianópolis</div>
-            </div>
-          </div>
-          <div class="game-card__detail">
-            <span class="material-icons-outlined" style="font-size:16px;">place</span>
-            Ginásio da SER Aurora — Chapecó, SC
-          </div>
-          <div class="game-card__detail">
-            <span class="material-icons-outlined" style="font-size:16px;">sports_score</span>
-            Copa SC — 2ª Rodada
-          </div>
-        </div>
-
-        <!-- Próximo Jogo em Casa -->
-        <div class="game-card game-card--upcoming">
-          <div class="game-card__badge game-card__badge--upcoming">
-            <span class="material-icons-outlined" style="font-size:14px;">schedule</span>
-            Próximo Jogo em Casa
-          </div>
           <div class="game-card__league">Campeonato Brasileiro de Futsal</div>
           <div class="game-card__date">04 de Jul, 2026 — 16h</div>
           <div class="game-card__match">
@@ -382,7 +344,9 @@
               <div class="game-card__team-name">Chapecoense</div>
             </div>
             <div class="game-card__score">
-              <span class="game-card__vs game-card__vs--upcoming">VS</span>
+              <span class="game-card__goals" style="color:var(--color-green);">3</span>
+              <span class="game-card__vs">×</span>
+              <span class="game-card__goals">0</span>
             </div>
             <div class="game-card__team">
               <div class="game-card__team-logo" style="background:transparent;"><img src="images/escudos/criciuma.webp" alt="Criciúma Futsal"></div>
@@ -395,13 +359,40 @@
           </div>
           <div class="game-card__detail">
             <span class="material-icons-outlined" style="font-size:16px;">sports_score</span>
-            Brasileirão de Futsal — 1ª Rodada
+            Brasileirão — 1ª Rodada
           </div>
-          <a href="https://ingressojogo.com.br/" target="_blank" rel="noopener" class="btn"
-            style="background:#006b3f;border-color:#006b3f;color:#fff;font-weight:700;margin-top:var(--space-4);justify-content:center;gap:0.5rem;">
-            <span class="material-icons-outlined" style="font-size:18px;">confirmation_number</span>
-            Comprar ingressos
-          </a>
+        </div>
+
+        <!-- Próximo Jogo em Casa -->
+        <div class="game-card game-card--upcoming">
+          <div class="game-card__badge game-card__badge--upcoming">
+            <span class="material-icons-outlined" style="font-size:14px;">schedule</span>
+            Próximo Jogo em Casa
+          </div>
+          <div class="game-card__league">Campeonato Brasileiro de Futsal</div>
+          <div class="game-card__date">24 de Jul, 2026 — 19h30</div>
+          <div class="game-card__match">
+            <div class="game-card__team">
+              <div class="game-card__team-logo" style="background:var(--color-green-bg);"><img
+                  src="images/escudos/chapecoense.webp" alt="Chapecoense Futsal"></div>
+              <div class="game-card__team-name">Chapecoense</div>
+            </div>
+            <div class="game-card__score">
+              <span class="game-card__vs game-card__vs--upcoming">VS</span>
+            </div>
+            <div class="game-card__team">
+              <div class="game-card__team-logo" style="background:transparent;"><img src="images/escudos/saojoaojaguaribe.webp" alt="São João do Jaguaribe Futsal"></div>
+              <div class="game-card__team-name">São João do Jaguaribe</div>
+            </div>
+          </div>
+          <div class="game-card__detail">
+            <span class="material-icons-outlined" style="font-size:16px;">place</span>
+            Local a definir — Chapecó, SC
+          </div>
+          <div class="game-card__detail">
+            <span class="material-icons-outlined" style="font-size:16px;">sports_score</span>
+            Brasileirão de Futsal — 2ª Rodada
+          </div>
         </div>
       </div>
 
