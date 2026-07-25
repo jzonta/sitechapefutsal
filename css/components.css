@@ -1973,3 +1973,37 @@
         display: none !important;
     }
 }
+
+/* Hero das notícias internas — mais baixo e compacto que o banner da home
+   (.hero--compact = 480px no desktop). O objetivo é revelar parte do texto da
+   matéria já ao abrir a página, deixando claro que houve troca de página.
+   Como a altura do hero é ditada pelo conteúdo (título grande em 6xl quebra em
+   várias linhas), além do min-height reduzimos título, padding e margens. */
+.hero--article {
+    min-height: 260px;
+}
+.hero--article .hero__content {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-10) !important;
+}
+.hero--article .hero__title {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--space-4);
+}
+.hero--article .hero__subtitle {
+    font-size: var(--font-size-lg);
+    margin-bottom: 0;
+}
+@media (min-width: 769px) {
+    .hero--article {
+        min-height: 340px;
+    }
+}
+@media (max-width: 768px) {
+    .hero--article {
+        min-height: 220px;
+    }
+    .hero--article .hero__title {
+        font-size: var(--font-size-3xl);
+    }
+}

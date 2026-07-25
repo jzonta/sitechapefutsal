@@ -14,12 +14,22 @@ Antes de começar, garanta que você tem:
 - **Corpo** da notícia (parágrafos) — copie o texto exatamente como fornecido, sem reescrever
 - **Tag/categoria** — uma das que já existem: `Série Ouro`, `Copa SC`, `Comissão Técnica`, etc. Escolha a que melhor se encaixa.
 - **Data** da publicação (ex: "10 de junho de 2026")
-- **Imagens** — caminho dos arquivos (geralmente em `~/Downloads`). A 1ª imagem é a capa/hero.
+- **Imagens** — ficam em `~/Downloads` (vindas do WhatsApp). Não peça o caminho de cada uma: liste as recentes no **Passo 0** e confirme quais entram. A 1ª imagem é a capa/hero.
 - **Crédito das fotos** (ex: `@rogersilva_fotografia/@achapefutsal`)
 
 Se algo estiver faltando, pergunte antes de prosseguir.
 
 ## Passos
+
+### 0. Localizar as fotos novas no Downloads
+
+As fotos chegam pelo WhatsApp e o usuário salva em `~/Downloads`. Em vez de pedir o caminho de cada uma, liste as imagens mais recentes e confirme quais são as desta notícia:
+
+```bash
+ls -lt ~/Downloads/ | grep -iE '\.(jpg|jpeg|png|heic)$' | head -20
+```
+
+Mostre a lista ao usuário e pergunte **quais arquivos** entram (e em que ordem — a 1ª é a capa/hero). Se ele já disse quais são, siga direto. Não mova nem apague os originais.
 
 ### 1. Determinar o próximo número
 
@@ -85,9 +95,17 @@ Localize o `<div class="grid grid-3 gap-8">` na seção "ÚLTIMAS NOTÍCIAS". In
 
 Insira o **mesmo card** como primeiro item do grid `<div class="grid grid-3 gap-8">`, com indentação de 4 espaços (padrão do arquivo). **Não remova** nada aqui — esta página lista todas as notícias.
 
-### 6. (Opcional) Banner principal
+### 6. Banner principal (última notícia)
 
-Se a notícia for sobre um jogo e o usuário pedir, atualize o `result-banner` no topo do `index.html` (escudos, data, local, placar). Quando a Chape joga **fora de casa**, o mandante vem primeiro (à esquerda) e a Chape depois. Escudos em `images/escudos/`.
+O banner no topo do `index.html` — `<a class="hero hero--compact home-hero">` dentro de `.hero-banner__wrapper` — sempre reflete a **última notícia**. A cada notícia nova, atualize-o para a matéria recém-criada:
+
+- `href` do `<a>` → `noticiaXX.html`
+- `hero__bg` `<img>` → uma foto **diferente** da capa da notícia interna (que usa a `-1`). Escolha outra imagem de ação da matéria — normalmente `images/noticias/noticiaXX-2.jpg` — e ajuste o `alt` para descrevê-la
+- `card__tag` → {{TAG}} e a data ao lado → {{DATA}}
+- `hero__title` → {{TÍTULO}}
+- `hero__subtitle` → {{SUBTÍTULO}}
+
+Título, tag, data e subtítulo são os mesmos do primeiro card da home (Passo 4); só a **foto de fundo do banner deve diferir** da capa (`-1`) usada no hero interno.
 
 ### 7. Verificar
 
@@ -97,9 +115,29 @@ grep -c 'class="card" data-animate' index.html   # deve ser 6
 for f in $(grep -o 'noticiaXX-[0-9].jpg' noticiaXX.html | sort -u); do test -f "images/noticias/$f" && echo "OK $f" || echo "FALTA $f"; done
 ```
 
-### 8. Commit
+### 8. Preview — abra e confira ANTES de publicar
 
-Só faça commit/push se o usuário pedir. Mensagem em português, ex: `Adicionada notícia XX`. Inclua a página, as imagens e os dois arquivos atualizados.
+Nunca faça commit/push direto. Primeiro abra a página no navegador local para o usuário revisar:
+
+```bash
+open /Users/joaozonta/Code/sitechapefutsal/noticiaXX.html
+open /Users/joaozonta/Code/sitechapefutsal/index.html
+```
+
+Então **pergunte explicitamente**: "Conferido. Posso publicar (commit + push)?" e liste em uma linha o que será enviado (página nova, imagens `noticiaXX-*.jpg`, `index.html`, `noticias.html`). **Espere a confirmação.** Se o usuário pedir ajustes, corrija e abra o preview de novo.
+
+### 9. Publicar (só após o "sim")
+
+Um `git push` já atualiza o site no ar (servidor puxa via git) — então publicar = commit + push. Mensagem em português no padrão dos commits anteriores, descrevendo a notícia:
+
+```bash
+cd /Users/joaozonta/Code/sitechapefutsal
+git add noticiaXX.html images/noticias/noticiaXX-*.jpg index.html noticias.html
+git commit -m "Adicionada notícia XX (resumo curto) e atualizadas listagens da home e de notícias"
+git push
+```
+
+Confirme ao usuário que foi publicado e que o site atualiza sozinho em instantes.
 
 ## Regra de ouro
 
