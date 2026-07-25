@@ -48,7 +48,7 @@
     </div>
   </header>
 
-  <!-- HERO BANNER - PRÓXIMO JOGO -->
+  <!-- HERO BANNER - RESULTADO FINAL -->
   <style>
     .result-banner {
       min-height: unset !important;
@@ -276,7 +276,7 @@
 
       <div class="result-banner__content">
         <div class="result-banner__status">
-          Próximo Jogo em Casa
+          Resultado Final
         </div>
         <div class="result-banner__league"
           style="font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase;">
@@ -292,7 +292,9 @@
           </div>
 
           <div class="result-banner__score-center">
-            <span class="result-banner__vs-text">VS</span>
+            <span class="result-banner__goal">2</span>
+            <span class="result-banner__score-divider">×</span>
+            <span class="result-banner__goal">3</span>
           </div>
 
           <div class="result-banner__team">
@@ -314,12 +316,6 @@
           </div>
         </div>
 
-        <div class="result-banner__cta-row">
-          <a href="https://ingressojogo.com.br/jogos/12/ingressos" target="_blank" rel="noopener" class="btn result-banner__cta">
-            <span class="material-icons-outlined" style="font-size: 20px;">confirmation_number</span>
-            Comprar ingressos
-          </a>
-        </div>
       </div>
     </section>
   </div>
@@ -340,40 +336,6 @@
             Último Jogo
           </div>
           <div class="game-card__league">Campeonato Brasileiro de Futsal</div>
-          <div class="game-card__date">04 de Jul, 2026 — 16h</div>
-          <div class="game-card__match">
-            <div class="game-card__team">
-              <div class="game-card__team-logo" style="background:var(--color-green-bg);"><img
-                  src="images/escudos/chapecoense.webp" alt="Chapecoense Futsal"></div>
-              <div class="game-card__team-name">Chapecoense</div>
-            </div>
-            <div class="game-card__score">
-              <span class="game-card__goals" style="color:var(--color-green);">3</span>
-              <span class="game-card__vs">×</span>
-              <span class="game-card__goals">0</span>
-            </div>
-            <div class="game-card__team">
-              <div class="game-card__team-logo" style="background:transparent;"><img src="images/escudos/criciuma.webp" alt="Criciúma Futsal"></div>
-              <div class="game-card__team-name">Criciúma</div>
-            </div>
-          </div>
-          <div class="game-card__detail">
-            <span class="material-icons-outlined" style="font-size:16px;">place</span>
-            Ginásio do SESC — Chapecó, SC
-          </div>
-          <div class="game-card__detail">
-            <span class="material-icons-outlined" style="font-size:16px;">sports_score</span>
-            Brasileirão — 1ª Rodada
-          </div>
-        </div>
-
-        <!-- Próximo Jogo em Casa -->
-        <div class="game-card game-card--upcoming">
-          <div class="game-card__badge game-card__badge--upcoming">
-            <span class="material-icons-outlined" style="font-size:14px;">schedule</span>
-            Próximo Jogo em Casa
-          </div>
-          <div class="game-card__league">Campeonato Brasileiro de Futsal</div>
           <div class="game-card__date">24 de Jul, 2026 — 19h15</div>
           <div class="game-card__match">
             <div class="game-card__team">
@@ -382,7 +344,9 @@
               <div class="game-card__team-name">Chapecoense</div>
             </div>
             <div class="game-card__score">
-              <span class="game-card__vs game-card__vs--upcoming">VS</span>
+              <span class="game-card__goals">2</span>
+              <span class="game-card__vs">×</span>
+              <span class="game-card__goals">3</span>
             </div>
             <div class="game-card__team">
               <div class="game-card__team-logo" style="background:transparent;"><img src="images/escudos/saojoaojaguaribe.webp" alt="São João do Jaguaribe Futsal"></div>
@@ -395,13 +359,40 @@
           </div>
           <div class="game-card__detail">
             <span class="material-icons-outlined" style="font-size:16px;">sports_score</span>
-            Brasileirão de Futsal — 2ª Rodada
+            Brasileirão — 2ª Rodada
           </div>
-          <a href="https://ingressojogo.com.br/jogos/12/ingressos" target="_blank" rel="noopener" class="btn"
-            style="background:#006b3f;border-color:#006b3f;color:#fff;font-weight:700;margin-top:var(--space-4);justify-content:center;gap:0.5rem;">
-            <span class="material-icons-outlined" style="font-size:18px;">confirmation_number</span>
-            Comprar ingressos
-          </a>
+        </div>
+
+        <!-- Próximo Jogo (Fora) -->
+        <div class="game-card game-card--upcoming">
+          <div class="game-card__badge game-card__badge--upcoming">
+            <span class="material-icons-outlined" style="font-size:14px;">schedule</span>
+            Próximo Jogo
+          </div>
+          <div class="game-card__league">Campeonato Catarinense de Futsal</div>
+          <div class="game-card__date">29 de Jul, 2026 — 19h30</div>
+          <div class="game-card__match">
+            <div class="game-card__team">
+              <div class="game-card__team-logo" style="background:transparent;"><img src="images/escudos/catanduvas.webp" alt="Catanduvas Futsal"></div>
+              <div class="game-card__team-name">Catanduvas</div>
+            </div>
+            <div class="game-card__score">
+              <span class="game-card__vs game-card__vs--upcoming">VS</span>
+            </div>
+            <div class="game-card__team">
+              <div class="game-card__team-logo" style="background:var(--color-green-bg);"><img
+                  src="images/escudos/chapecoense.webp" alt="Chapecoense Futsal"></div>
+              <div class="game-card__team-name">Chapecoense</div>
+            </div>
+          </div>
+          <div class="game-card__detail">
+            <span class="material-icons-outlined" style="font-size:16px;">place</span>
+            Catanduvas, SC
+          </div>
+          <div class="game-card__detail">
+            <span class="material-icons-outlined" style="font-size:16px;">sports_score</span>
+            Campeonato Catarinense de Futsal
+          </div>
         </div>
       </div>
 
@@ -423,8 +414,24 @@
       </div>
 
       <div class="grid grid-3 gap-8">
-        <!-- Notícia 01 — 22/07/2026 (mais recente) -->
-        <a href="noticia39.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+        <!-- Notícia 01 — 24/07/2026 (mais recente) -->
+        <a href="noticia40.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+          <img class="card__image" src="images/noticias/noticia40-1.jpg"
+            alt="Chape Futsal é superada no Campeonato Brasileiro" style="object-position: center 40%;">
+          <div class="card__body">
+            <span class="card__tag">Brasileiro</span>
+            <div class="card__date">24 de julho de 2026</div>
+            <h3 class="card__title">Chape Futsal é superada no Campeonato Brasileiro</h3>
+            <p class="card__text">Verdão das Quadras enfrentou o São João do Jaguaribe, do Ceará, dentro de casa</p>
+            <span class="card__link">
+              Ler matéria completa
+              <span class="material-icons-outlined" style="font-size:16px;">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Notícia 02 — 22/07/2026 -->
+        <a href="noticia39.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
           <img class="card__image" src="images/noticias/noticia39-1.jpg"
             alt="Chape Futsal intensifica preparação para desafio pelo Brasileiro" style="object-position: center 40%;">
           <div class="card__body">
@@ -439,8 +446,8 @@
           </div>
         </a>
 
-        <!-- Notícia 02 — 21/07/2026 -->
-        <a href="noticia38.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
+        <!-- Notícia 03 — 21/07/2026 -->
+        <a href="noticia38.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
           <img class="card__image" src="images/noticias/noticia38-1.jpg"
             alt="Craque Pito acompanha treino e recebe camisa da Chape Futsal" style="object-position: center 30%;">
           <div class="card__body">
@@ -455,8 +462,8 @@
           </div>
         </a>
 
-        <!-- Notícia 03 — 20/07/2026 -->
-        <a href="noticia37.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
+        <!-- Notícia 04 — 20/07/2026 -->
+        <a href="noticia37.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
           <img class="card__image" src="images/noticias/noticia37-1.jpg"
             alt="Fim de semana de grandes resultados para a Chape Futsal" style="object-position: center 30%;">
           <div class="card__body">
@@ -471,8 +478,8 @@
           </div>
         </a>
 
-        <!-- Notícia 04 — 17/07/2026 -->
-        <a href="noticia36.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+        <!-- Notícia 05 — 17/07/2026 -->
+        <a href="noticia36.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
           <img class="card__image" src="images/noticias/noticia36-1.jpg"
             alt="Já é possível garantir ingresso para o segundo jogo da Chape Futsal no Brasileiro" style="object-position: center;">
           <div class="card__body">
@@ -487,8 +494,8 @@
           </div>
         </a>
 
-        <!-- Notícia 05 — 15/07/2026 -->
-        <a href="noticia35.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
+        <!-- Notícia 06 — 15/07/2026 -->
+        <a href="noticia35.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
           <img class="card__image" src="images/noticias/noticia35-1.jpg"
             alt="Chape Futsal representa Unochapecó nos Jogos Universitários Catarinenses" style="object-position: center;">
           <div class="card__body">
@@ -502,24 +509,6 @@
             </span>
           </div>
         </a>
-
-        <!-- Notícia 06 — 14/07/2026 -->
-        <a href="noticia34.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
-          <img class="card__image" src="images/noticias/noticia34-1.jpg"
-            alt="Lançada a 3ª Feijoada da Chape Futsal com meta de atrair 2,5 mil pessoas" style="object-position: center 30%;">
-          <div class="card__body">
-            <span class="card__tag">Evento</span>
-            <div class="card__date">14 de julho de 2026</div>
-            <h3 class="card__title">Lançada a 3ª Feijoada da Chape Futsal com meta de atrair 2,5 mil pessoas</h3>
-            <p class="card__text">Reunião definiu detalhes do evento de 12 de setembro, com atrações musicais, espaço infantil, exposição de patrocinadores e início das vendas de ingressos.</p>
-            <span class="card__link">
-              Ler matéria completa
-              <span class="material-icons-outlined" style="font-size:16px;">arrow_forward</span>
-            </span>
-          </div>
-        </a>
-
-
 
       </div>
 
