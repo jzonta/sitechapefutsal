@@ -170,6 +170,32 @@ git push
 
 Confirme ao usuário que foi publicado e que o site atualiza sozinho em instantes.
 
+## Cache do Cloudflare — versão dos assets (`?v=`)
+
+O site fica atrás do **Cloudflare**, que **cacheia `css/*.css` e `js/*.js` por 4 horas** (`max-age=14400`). As páginas `.html` **não** são cacheadas (`cf-cache-status: DYNAMIC`), então mudança em HTML aparece na hora — mas mudança em **CSS ou JS** ficaria "presa" no cache antigo por horas.
+
+Por isso todas as páginas carregam os assets com um selo de versão:
+
+```html
+<link rel="stylesheet" href="css/index.css?v=20260730">
+<link rel="stylesheet" href="css/components.css?v=20260730">
+<script src="js/main.js?v=20260730"></script>
+```
+
+Como o HTML é sempre fresco, trocar o número do `?v=` faz o navegador/Cloudflare baixarem o arquivo novo **imediatamente**.
+
+- **Adicionar notícia (fluxo normal): NÃO precisa bumpar.** Você mexe só em HTML e imagens — o CSS/JS não mudam, então o cache deles pode continuar.
+- **Se você alterar qualquer arquivo em `css/` ou `js/`**, incremente o `?v=` (use a data do dia, `AAAAMMDD`) em **todas** as páginas e no template, com um comando só:
+
+```bash
+cd /Users/joaozonta/Code/sitechapefutsal
+OLD=20260730; NEW=$(date +%Y%m%d)   # ou o número atual → novo
+perl -0777 -pi -e "s/\\?v=$OLD\"/?v=$NEW\"/g" *.html .claude/skills/adicionar-noticia/templates/noticia-template.html
+grep -c "v=$NEW" index.html   # confere que aplicou
+```
+
+Alternativa quando o cache já está velho e você quer resolver na hora sem bumpar: **purgar o cache no painel do Cloudflare** (Caching → Purge Cache → Purge Everything).
+
 ## Regra de ouro
 
 **Não altere o texto da notícia** fornecido pelo usuário e **siga o padrão visual já existente** — copie de uma página recente em vez de inventar marcação nova.
