@@ -107,7 +107,38 @@ O banner no topo do `index.html` — `<a class="hero hero--compact home-hero">` 
 
 Título, tag, data e subtítulo são os mesmos do primeiro card da home (Passo 4); só a **foto de fundo do banner deve diferir** da capa (`-1`) usada no hero interno.
 
-### 7. Verificar
+### 7. Atualizar os cards de jogo (seção "Calendário de Jogos")
+
+Só se aplica quando a notícia **muda a situação dos jogos** — pós-jogo com resultado ou confirmação/mudança do próximo confronto. Notícia institucional pura pode pular este passo.
+
+A seção `<!-- JOGOS -->` do `index.html` tem **dois cards** (`.games-grid`):
+
+- **Último Jogo** — `<article class="game-card game-card--result">`
+- **Próximo Jogo** — `<article class="game-card game-card--upcoming">`
+
+Num **pós-jogo**, o fluxo normal é: mover o confronto que era "Próximo Jogo" para "Último Jogo" com o placar, e colocar o **próximo confronto** no card de "Próximo Jogo".
+
+**Card "Último Jogo"** — o que trocar:
+- **Chip casa/fora** (canto direito do topo): fora → `<span class="material-icons-outlined">flight_takeoff</span> Fora de casa`; casa → adicione a classe `game-card__chip--home` e use `<span class="material-icons-outlined">home</span> Em casa`.
+- `game-card__comp` → `Campeonato ... · Xª Rodada`.
+- `game-card__date` → `DD Mmm AAAA · HHhMM` (ex: `30 Jul 2026 · 19h30`).
+- Escudos e nomes dos dois times (o **mandante fica à esquerda**). O escudo da Chape usa a `<div class="game-card__team-logo game-card__team-logo--chape">`; o adversário usa `game-card__team-logo` sem a modificadora.
+- **Placar**: dois `game-card__goals`; adicione `game-card__goals--win` no gol **do vencedor** (realça; o perdedor fica esmaecido). Em empate, não use `--win` em nenhum.
+- **Pill de resultado** (`game-card__result-tag`), do ponto de vista da Chape:
+  - Vitória → `game-card__result-tag--win`, ícone `check_circle`, texto `Vitória`
+  - Empate → `game-card__result-tag--draw`, ícone `remove`, texto `Empate`
+  - Derrota → `game-card__result-tag--loss`, ícone `cancel`, texto `Derrota`
+- **Rodapé**: `game-card__meta` com o ginásio/cidade e o CTA fantasma `game-card__cta--ghost` **"Ver relato da partida"** apontando para a `noticiaXX.html` recém-criada (o relato daquele jogo).
+
+**Card "Próximo Jogo"** — o que trocar:
+- Chip casa/fora (mesma regra acima).
+- `game-card__comp`, `game-card__date`, escudos e nomes (Chape à esquerda quando mandante).
+- **Contador regressivo** — o atributo **`data-countdown`** do `<div class="game-card__countdown" ...>` é o que alimenta o JS ([initGameCountdown() em js/main.js](../../js/main.js)). Coloque a data/hora do jogo em ISO com fuso de Brasília: `data-countdown="AAAA-MM-DDTHH:MM:00-03:00"` (ex: `2026-08-08T19:30:00-03:00`). O texto `Faltam X dias` dentro de `.game-card__countdown-text` é só fallback — o JS o sobrescreve com o valor real —, mas atualize-o para um número plausível.
+- **Rodapé**: `game-card__meta` com o local e o CTA verde `game-card__cta--green` **"Comprar ingresso"** (ícone `confirmation_number`) apontando para o link de ingressos daquele jogo. Se o usuário não passar o link, **pergunte** ou remova o botão — não invente URL.
+
+**Escudos novos**: se o adversário ainda não tiver escudo em `images/escudos/`, peça/gere o arquivo (`.webp` ou `.png`) e referencie-o, como já é feito para o banner. Nomeie em minúsculas com hífen (ex: `sorriso.png`, `america-mg.webp`).
+
+### 8. Verificar
 
 ```bash
 cd /Users/joaozonta/Code/sitechapefutsal
@@ -115,7 +146,7 @@ grep -c 'class="card" data-animate' index.html   # deve ser 6
 for f in $(grep -o 'noticiaXX-[0-9].jpg' noticiaXX.html | sort -u); do test -f "images/noticias/$f" && echo "OK $f" || echo "FALTA $f"; done
 ```
 
-### 8. Preview — abra e confira ANTES de publicar
+### 9. Preview — abra e confira ANTES de publicar
 
 Nunca faça commit/push direto. Primeiro abra a página no navegador local para o usuário revisar:
 
@@ -126,7 +157,7 @@ open /Users/joaozonta/Code/sitechapefutsal/index.html
 
 Então **pergunte explicitamente**: "Conferido. Posso publicar (commit + push)?" e liste em uma linha o que será enviado (página nova, imagens `noticiaXX-*.jpg`, `index.html`, `noticias.html`). **Espere a confirmação.** Se o usuário pedir ajustes, corrija e abra o preview de novo.
 
-### 9. Publicar (só após o "sim")
+### 10. Publicar (só após o "sim")
 
 Um `git push` já atualiza o site no ar (servidor puxa via git) — então publicar = commit + push. Mensagem em português no padrão dos commits anteriores, descrevendo a notícia:
 

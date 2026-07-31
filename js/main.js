@@ -11,7 +11,54 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     setActiveNav();
     initBannerCycle();
+    initGameCountdown();
 });
+
+/* ---------- Next game countdown ---------- */
+function initGameCountdown() {
+    const el = document.querySelector('[data-countdown]');
+    if (!el) return;
+
+    const target = new Date(el.dataset.countdown);
+    if (isNaN(target.getTime())) return;
+
+    const setText = (html) => {
+        const t = el.querySelector('.game-card__countdown-text');
+        if (t) t.innerHTML = html;
+    };
+
+    const render = () => {
+        const diff = target.getTime() - Date.now();
+
+        // Kickoff passed: show a live/closed state and stop ticking.
+        if (diff <= 0) {
+            if (diff > -3 * 60 * 60 * 1000) {
+                setText('Jogo em andamento');
+            } else {
+                setText('Aguardando próximo jogo');
+            }
+            return false;
+        }
+
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+
+        if (days > 1) {
+            setText(`Faltam <strong>${days} dias</strong>`);
+        } else if (days === 1) {
+            setText('Falta <strong>1 dia</strong>');
+        } else if (hours > 0) {
+            setText(`Faltam <strong>${hours}h ${mins}min</strong>`);
+        } else {
+            setText(`Faltam <strong>${mins} min</strong>`);
+        }
+        return true;
+    };
+
+    if (render() === false) return;
+    setInterval(render, 60000);
+}
 
 /* ---------- Banner animation cycle ---------- */
 function initBannerCycle() {

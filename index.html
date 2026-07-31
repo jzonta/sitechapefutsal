@@ -99,70 +99,108 @@
 
       <div class="games-grid" data-animate>
         <!-- Último Jogo -->
-        <div class="game-card game-card--result">
-          <div class="game-card__badge game-card__badge--result">
-            <span class="material-icons-outlined" style="font-size:14px;">emoji_events</span>
-            Último Jogo
+        <article class="game-card game-card--result">
+          <div class="game-card__top">
+            <span class="game-card__eyebrow">
+              <span class="material-icons-outlined">emoji_events</span>
+              Último Jogo
+            </span>
+            <span class="game-card__chip">
+              <span class="material-icons-outlined">flight_takeoff</span>
+              Fora de casa
+            </span>
           </div>
-          <div class="game-card__league">Campeonato Brasileiro de Futsal</div>
-          <div class="game-card__date">30 de Jul, 2026 — 19h30</div>
+
+          <div class="game-card__comp">Campeonato Brasileiro de Futsal · 3ª Rodada</div>
+          <div class="game-card__date">
+            <span class="material-icons-outlined">event</span>
+            30 Jul 2026 · 19h30
+          </div>
+
           <div class="game-card__match">
             <div class="game-card__team">
-              <div class="game-card__team-logo" style="background:transparent;"><img src="images/escudos/america-mg.webp" alt="América-MG Futsal"></div>
-              <div class="game-card__team-name">América-MG</div>
+              <div class="game-card__team-logo"><img src="images/escudos/america-mg.webp" alt="América-MG Futsal"></div>
+              <span class="game-card__team-name">América-MG</span>
             </div>
             <div class="game-card__score">
               <span class="game-card__goals">1</span>
-              <span class="game-card__vs">×</span>
-              <span class="game-card__goals">4</span>
+              <span class="game-card__score-sep">×</span>
+              <span class="game-card__goals game-card__goals--win">4</span>
             </div>
             <div class="game-card__team">
-              <div class="game-card__team-logo" style="background:var(--color-green-bg);"><img
+              <div class="game-card__team-logo game-card__team-logo--chape"><img
                   src="images/escudos/chapecoense.webp" alt="Chapecoense Futsal"></div>
-              <div class="game-card__team-name">Chapecoense</div>
+              <span class="game-card__team-name">Chapecoense</span>
             </div>
           </div>
-          <div class="game-card__detail">
-            <span class="material-icons-outlined" style="font-size:16px;">place</span>
-            Ginásio Municipal Dr. Márcio Reinaldo — Matozinhos, MG
+
+          <div class="game-card__result-tag game-card__result-tag--win">
+            <span class="material-icons-outlined">check_circle</span>
+            Vitória
           </div>
-          <div class="game-card__detail">
-            <span class="material-icons-outlined" style="font-size:16px;">sports_score</span>
-            Brasileirão — 3ª Rodada
+
+          <div class="game-card__footer">
+            <span class="game-card__meta">
+              <span class="material-icons-outlined">place</span>
+              Ginásio Dr. Márcio Reinaldo · Matozinhos, MG
+            </span>
+            <a class="game-card__cta game-card__cta--ghost" href="noticia42.html">
+              Ver relato da partida
+              <span class="material-icons-outlined">arrow_forward</span>
+            </a>
           </div>
-        </div>
+        </article>
 
         <!-- Próximo Jogo (Casa) -->
-        <div class="game-card game-card--upcoming">
-          <div class="game-card__badge game-card__badge--upcoming">
-            <span class="material-icons-outlined" style="font-size:14px;">schedule</span>
-            Próximo Jogo
+        <article class="game-card game-card--upcoming">
+          <div class="game-card__top">
+            <span class="game-card__eyebrow">
+              <span class="material-icons-outlined">sports_soccer</span>
+              Próximo Jogo
+            </span>
+            <span class="game-card__chip game-card__chip--home">
+              <span class="material-icons-outlined">home</span>
+              Em casa
+            </span>
           </div>
-          <div class="game-card__league">Campeonato Brasileiro de Futsal</div>
-          <div class="game-card__date">08 de Ago, 2026 — 19h30</div>
+
+          <div class="game-card__comp">Campeonato Brasileiro de Futsal · 4ª Rodada</div>
+          <div class="game-card__date">
+            <span class="material-icons-outlined">event</span>
+            08 Ago 2026 · 19h30
+          </div>
+
           <div class="game-card__match">
             <div class="game-card__team">
-              <div class="game-card__team-logo" style="background:var(--color-green-bg);"><img
+              <div class="game-card__team-logo game-card__team-logo--chape"><img
                   src="images/escudos/chapecoense.webp" alt="Chapecoense Futsal"></div>
-              <div class="game-card__team-name">Chapecoense</div>
+              <span class="game-card__team-name">Chapecoense</span>
             </div>
             <div class="game-card__score">
-              <span class="game-card__vs game-card__vs--upcoming">VS</span>
+              <span class="game-card__vs-badge">VS</span>
             </div>
             <div class="game-card__team">
-              <div class="game-card__team-logo" style="background:transparent;"><img src="images/escudos/sorriso.png" alt="Sorriso Futsal"></div>
-              <div class="game-card__team-name">Sorriso (MT)</div>
+              <div class="game-card__team-logo"><img src="images/escudos/sorriso.png" alt="Sorriso Futsal"></div>
+              <span class="game-card__team-name">Sorriso (MT)</span>
             </div>
           </div>
-          <div class="game-card__detail">
-            <span class="material-icons-outlined" style="font-size:16px;">place</span>
-            SESC — Chapecó, SC
+
+          <div class="game-card__countdown" data-countdown="2026-08-08T19:30:00-03:00">
+            <span class="material-icons-outlined">hourglass_top</span>
+            <span class="game-card__countdown-text">Faltam <strong>9 dias</strong></span>
           </div>
-          <div class="game-card__detail">
-            <span class="material-icons-outlined" style="font-size:16px;">sports_score</span>
-            Brasileirão — 4ª Rodada
+
+          <div class="game-card__footer">
+            <span class="game-card__meta">
+              <span class="material-icons-outlined">place</span>
+              SESC · Chapecó, SC
+            </span>
+            <a class="game-card__cta game-card__cta--green" href="https://ingressojogo.com.br/jogos/13/ingressos" target="_blank" rel="noopener">
+              <span class="material-icons-outlined">confirmation_number</span>
+              Comprar ingresso
+            </a>
           </div>
-        </div>
+        </article>
       </div>
 
       <div style="display:none;text-align:center;margin-top:var(--space-10);" data-animate>
