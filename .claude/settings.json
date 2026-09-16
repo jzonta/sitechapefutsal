@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/joao-zonta/**)",
+      "Bash(xargs -I{} ls -la {})",
+      "Bash(sort -k6,7)",
+      "Bash(identify /home/joao-zonta/feijoada.jpeg)",
+      "Bash(python3 -c \"from PIL import Image; print\\('PIL OK'\\)\")",
+      "Bash(mkdir -p /home/joao-zonta/Code/sitechapefutsal/images/noticias)",
+      "Bash(python3 -c ' *)",
+      "Bash(xdg-open noticia64.html)",
+      "Bash(xdg-open index.html)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Read(//mnt/c/Downloads/**)",
+      "Bash(ls -la /mnt/c/Downloads/ 2>&1 | tail -30; echo \"---\"; ls -la /mnt/c/ 2>&1)",
+      "Read(//mnt/c/**)",
+      "Bash(convert -version)",
+      "Bash(python3 -c \"import PIL; print\\(PIL.__version__\\)\")",
+      "Bash(xdg-open \"noticia65.html\")",
+      "Bash(xdg-open \"index.html\")",
+      "Bash(xdg-open \"noticias.html\")"
+    ]
+  }
+}
