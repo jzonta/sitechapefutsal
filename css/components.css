@@ -2197,3 +2197,208 @@
         font-size: var(--font-size-3xl);
     }
 }
+
+/* =============================================
+   FAIXA DE AVISO NO TOPO (injetada por initAnnounceBar em js/main.js)
+   ============================================= */
+:root {
+    --announce-height: 40px;
+}
+
+.announce-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    height: var(--announce-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--space-12);
+    background: var(--gradient-green);
+    color: #fff;
+    font-size: var(--font-size-sm);
+}
+
+.announce-bar__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.announce-bar__link .material-icons-outlined {
+    font-size: 18px;
+    color: var(--color-primary-lightest);
+}
+
+.announce-bar__detail {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.announce-bar__cta {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.announce-bar__close {
+    position: absolute;
+    right: var(--space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    background: none;
+    border: 0;
+    padding: var(--space-1);
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+}
+
+.announce-bar__close:hover {
+    color: #fff;
+}
+
+.has-announce body {
+    padding-top: var(--announce-height);
+}
+
+.has-announce .site-header {
+    top: var(--announce-height);
+}
+
+@media (max-width: 900px) {
+    .has-announce .nav-links {
+        top: var(--announce-height);
+        height: calc(100vh - var(--announce-height));
+    }
+}
+
+@media (max-width: 640px) {
+    .announce-bar {
+        padding: 0 var(--space-10) 0 var(--space-4);
+        font-size: var(--font-size-xs);
+    }
+
+    .announce-bar__detail {
+        display: none;
+    }
+}
+
+/* =============================================
+   FAIXA DE CONQUISTAS (home)
+   ============================================= */
+.honors-strip {
+    background: var(--gradient-green);
+    color: #fff;
+    padding: var(--space-12) 0;
+}
+
+.honors-strip__header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+}
+
+.honors-strip__label {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-primary-lightest);
+    margin-bottom: var(--space-2);
+}
+
+.honors-strip__title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: #fff;
+}
+
+.honors-strip__list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-4);
+}
+
+.honor {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-1);
+    padding: var(--space-6) var(--space-4);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-lg);
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+a.honor:hover {
+    background: rgba(255, 255, 255, 0.14);
+    transform: translateY(-2px);
+}
+
+.honor__icon {
+    font-size: 36px;
+    color: var(--color-primary-lightest);
+    margin-bottom: var(--space-1);
+}
+
+.honor__year {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.honor__title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.honor__place {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary-lightest);
+    font-weight: 600;
+}
+
+.honor--new {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: var(--color-primary-lightest);
+}
+
+.honor__badge {
+    position: absolute;
+    top: calc(var(--space-3) * -1);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 2px var(--space-3);
+    border-radius: 999px;
+    background: var(--color-primary-lightest);
+    color: var(--color-green-dark);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .honors-strip__list {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: var(--space-6);
+    }
+
+    .honor--new {
+        grid-column: 1 / -1;
+    }
+}

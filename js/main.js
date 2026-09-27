@@ -3,6 +3,7 @@
    ============================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initAnnounceBar();
     initHeader();
     initMobileMenu();
     initFAQ();
@@ -109,6 +110,47 @@ function cycleBanner(layers, visibleDuration, exitDuration) {
             cycleBanner(layers, visibleDuration, exitDuration);
         }, visibleDuration);
     }, exitDuration);
+}
+
+/* ---------- Announcement bar (topo de todas as páginas) ----------
+   Para trocar o aviso, altere ANNOUNCE (e o id, para reexibir a quem fechou).
+   Para remover, defina ANNOUNCE = null. */
+const ANNOUNCE = {
+    id: 'vice-copa-sul-2026',
+    href: 'noticia81.html',
+    title: 'Vice-campeã da Copa Sul 2026',
+    detail: 'Primeira final da história em competição da CBFS',
+    cta: 'Ler matéria'
+};
+
+function initAnnounceBar() {
+    if (!ANNOUNCE) return;
+    const storageKey = 'announce-closed';
+    try {
+        if (localStorage.getItem(storageKey) === ANNOUNCE.id) return;
+    } catch (e) { /* storage indisponível: mostra a faixa */ }
+
+    const bar = document.createElement('div');
+    bar.className = 'announce-bar';
+    bar.innerHTML = `
+        <a class="announce-bar__link" href="${ANNOUNCE.href}">
+            <span class="material-icons-outlined">emoji_events</span>
+            <strong>${ANNOUNCE.title}</strong>
+            <span class="announce-bar__detail">— ${ANNOUNCE.detail} ·</span>
+            <span class="announce-bar__cta">${ANNOUNCE.cta}</span>
+        </a>
+        <button class="announce-bar__close" type="button" aria-label="Fechar aviso">
+            <span class="material-icons-outlined" style="font-size:18px;">close</span>
+        </button>`;
+
+    bar.querySelector('.announce-bar__close').addEventListener('click', () => {
+        bar.remove();
+        document.documentElement.classList.remove('has-announce');
+        try { localStorage.setItem(storageKey, ANNOUNCE.id); } catch (e) { /* ignora */ }
+    });
+
+    document.body.prepend(bar);
+    document.documentElement.classList.add('has-announce');
 }
 
 /* ---------- Header scroll effect ---------- */
