@@ -36,6 +36,7 @@
 @endpush
 
 @section('content')
+<main id="conteudo">
 
     <!-- HERO -->
     <section class="hero hero--compact">
@@ -87,4 +88,5 @@
 
 
     <!-- FOOTER -->
+</main>
 @endsection

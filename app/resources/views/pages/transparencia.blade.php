@@ -73,7 +73,7 @@
     </section>
 
     <!-- DOCUMENTOS -->
-    <main>
+    <main id="conteudo">
     <section class="section" id="documentos">
         <div class="container">
             <div class="section-header section-header--center" data-animate>

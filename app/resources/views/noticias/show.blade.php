@@ -2,13 +2,15 @@
 
 @section('title', $noticia->titulo.' — Chapecoense Futsal')
 @section('description', $noticia->resumo)
+@section('og_type', 'article')
 @section('og_image', '/'.$noticia->imagem)
 
 @section('content')
+<main id="conteudo">
     <!-- HERO DA NOTÍCIA -->
     <section class="hero hero--compact hero--article">
         <div class="hero__bg">
-            <img src="{{ asset($noticia->imagem) }}" alt="{{ $noticia->imagem_alt }}"
+            <img src="{{ asset($noticia->imagem) }}" alt="{{ $noticia->imagem_alt }}" @if ($noticia->imagem_largura) width="{{ $noticia->imagem_largura }}" height="{{ $noticia->imagem_altura }}" @endif fetchpriority="high"
                 style="object-position: {{ $noticia->imagem_posicao ?? 'center' }};">
         </div>
         <div class="hero__overlay"
@@ -60,4 +62,5 @@
             </div>
         </div>
     </section>
+</main>
 @endsection

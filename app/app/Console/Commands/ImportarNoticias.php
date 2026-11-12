@@ -109,11 +109,27 @@ class ImportarNoticias extends Command
             'corpo' => trim($corpo),
             'imagem' => $imagem ? ltrim($imagem, '/') : null,
             'imagem_alt' => $hero?->getAttribute('alt') ?: null,
+            ...$this->dimensoes($imagem),
+            'imagem_banner' => $this->banner($corpo) ?? ($imagem ? ltrim($imagem, '/') : null),
             'imagem_posicao' => $this->posicao($hero?->getAttribute('style')),
             'sidebar_html' => trim($this->reescrever($sidebar)) ?: null,
             'publicado_em' => $this->data($xp),
             'publicado' => true,
         ];
+    }
+
+    /** Primeira imagem do corpo = foto usada no banner da home (como no site estático). */
+    private function banner(string $corpo): ?string
+    {
+        return preg_match('/<img[^>]+src="\/?(images\/[^"]+)"/', $corpo, $m) ? $m[1] : null;
+    }
+
+    private function dimensoes(?string $imagem): array
+    {
+        $path = $imagem ? public_path(ltrim($imagem, '/')) : null;
+        $info = $path && is_file($path) ? @getimagesize($path) : false;
+
+        return ['imagem_largura' => $info[0] ?? null, 'imagem_altura' => $info[1] ?? null];
     }
 
     private function data(DOMXPath $xp): ?Carbon

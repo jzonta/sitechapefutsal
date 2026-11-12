@@ -4,13 +4,8 @@
 @section('description', 'Site oficial da Associação Chapecoense de Futsal. Acompanhe notícias, elenco, competições e muito mais do Verdão das Quadras.')
 
 @push('head')
-    <meta name="theme-color" content="#006b3f">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:description" content="Notícias, jogos, ingressos e conquistas da Associação Chapecoense de Futsal, o Verdão das Quadras.">
-    <meta name="twitter:card" content="summary">
     @if ($destaque?->imagem)
-    <link rel="preload" as="image" href="{{ asset($destaque->imagem) }}" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset($destaque->imagem_banner ?? $destaque->imagem) }}" fetchpriority="high">
     @endif
   <style>
     /* ===== Ajustes da home (escopo desta página) ===== */
@@ -125,7 +120,7 @@
     <a href="{{ $destaque->url() }}" class="hero hero--compact home-hero">
       <div class="hero__bg">
         @if ($destaque->imagem)
-        <img src="{{ asset($destaque->imagem) }}"
+        <img src="{{ asset($destaque->imagem_banner ?? $destaque->imagem) }}"
           alt="{{ $destaque->imagem_alt ?? $destaque->titulo }}"
           fetchpriority="high" decoding="async">
         @endif
@@ -320,11 +315,11 @@
       </div>
 
       <div class="grid grid-3 gap-8">
-        @foreach ($ultimas->take(5) as $noticia)
+        @foreach ($ultimas->take(6) as $noticia)
         <a href="{{ $noticia->url() }}" class="card card--news" data-animate data-delay="{{ ($loop->index % 3 + 1) * 100 }}">
           @if ($noticia->imagem)
           <img class="card__image" src="{{ asset($noticia->imagem) }}"
-            alt="{{ $noticia->imagem_alt ?? $noticia->titulo }}" loading="lazy" decoding="async">
+            alt="{{ $noticia->imagem_alt ?? $noticia->titulo }}" @if ($noticia->imagem_largura) width="{{ $noticia->imagem_largura }}" height="{{ $noticia->imagem_altura }}" @endif loading="lazy" decoding="async">
           @endif
           <div class="card__body">
             @if ($noticia->categoria)<span class="card__tag">{{ $noticia->categoria }}</span>@endif

@@ -4,10 +4,99 @@
 @section('description', 'Acompanhe o dia a dia do Verdão das Quadras: cobertura de jogos, contratações e comunicados oficiais da Chapecoense Futsal.')
 
 @push('head')
-    <style>[data-animate] { opacity: 1 !important; }</style>
+    <noscript><style>[data-animate] { opacity: 1 !important; }</style></noscript>
+    <style>
+        /* ---- Listagem de notícias ---- */
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+            overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+        }
+
+        /* Filtro por categoria (montado por JS; sem JS a lista segue completa) */
+        .news-filter { margin-bottom: var(--space-8); }
+        .news-filter[hidden] { display: none; }
+        .news-filter__chips {
+            display: flex; flex-wrap: wrap; gap: var(--space-2);
+            margin: 0; padding: 0; list-style: none;
+        }
+        .news-filter__chip {
+            font: inherit; font-size: var(--font-size-sm); font-weight: 500; line-height: 1.2;
+            min-height: 44px; padding: var(--space-2) var(--space-4); white-space: nowrap;
+            color: var(--color-text-secondary); background: var(--color-surface);
+            border: 1px solid var(--color-border); border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+        }
+        .news-filter__chip:hover { border-color: var(--color-green); color: var(--color-green); }
+        .news-filter__chip[aria-pressed="true"] {
+            background: var(--color-green); border-color: var(--color-green); color: var(--color-surface);
+        }
+        .news-filter__chip:focus-visible,
+        .news-list > .card:focus-visible {
+            outline: 3px solid var(--color-green); outline-offset: 3px;
+        }
+        .news-filter__count {
+            margin: var(--space-4) 0 0; font-size: var(--font-size-sm); color: var(--color-text-muted);
+        }
+        @media (max-width: 640px) {
+            .news-filter__chips {
+                flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity;
+                margin-inline: calc(var(--space-4) * -1); padding-inline: var(--space-4);
+                padding-bottom: var(--space-2); scrollbar-width: thin;
+            }
+            .news-filter__chip { flex: none; scroll-snap-align: start; }
+        }
+
+        /* Cards: altura igual por linha, link de leitura sempre na base */
+        .news-list > .card { display: flex !important; flex-direction: column; }
+        .news-list > .card[hidden] { display: none !important; }
+        .news-list .card__body { display: flex; flex-direction: column; align-items: flex-start; flex: 1; }
+        .news-list .card__title { text-wrap: balance; line-height: 1.3; }
+        .news-list .card__text {
+            display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+            line-clamp: 3; overflow: hidden;
+        }
+        .news-list .card__link { margin-top: auto; }
+        .news-list .card:hover .card__link,
+        .news-list .card__link:hover { color: var(--color-green-dark); }
+        .news-list .card__image { aspect-ratio: 16 / 9; height: auto; max-height: 220px; }
+        .news-list .card__date { font-variant-numeric: tabular-nums; }
+
+        /* Matéria mais recente em destaque (a primeira do grid, qualquer que seja) */
+        @media (min-width: 641px) {
+            .news-list.is-all > .card:first-child { grid-column: 1 / -1; }
+            .news-list.is-all > .card:first-child .card__image { aspect-ratio: 21 / 9; max-height: 340px; }
+            .news-list.is-all > .card:first-child .card__title { font-size: var(--font-size-2xl); }
+            .news-list.is-all > .card:first-child .card__text { font-size: var(--font-size-base); -webkit-line-clamp: 4; line-clamp: 4; }
+        }
+        @media (min-width: 769px) {
+            .news-list.is-all > .card:first-child { flex-direction: row; }
+            .news-list.is-all > .card:first-child .card__image {
+                width: 56%; height: auto; max-height: none; aspect-ratio: auto; min-height: 320px; flex: none;
+            }
+            .news-list.is-all > .card:first-child .card__body {
+                justify-content: center; padding: var(--space-8);
+            }
+            .news-list.is-all > .card:first-child .card__link { margin-top: var(--space-2); }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .news-list.is-all > .card:first-child .card__image { width: 46%; }
+            .news-list.is-all > .card:first-child .card__title { font-size: var(--font-size-xl); }
+            .news-list.is-all > .card:first-child .card__body { padding: var(--space-6); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .news-list > .card { transition: none; }
+            .news-list > .card:hover { transform: none; }
+            .news-list .card__link { transition: none; }
+            .news-list > .card.animate-fade-in-up { animation: none; }
+        }
+    </style>
 @endpush
 
 @section('content')
+<main id="conteudo">
     <section class="hero hero--compact">
         <div class="hero__bg">
             <img src="/images/fotos/IMG_4346.webp" alt="" fetchpriority="high"
@@ -49,7 +138,7 @@
             <div class="grid grid-3 gap-8 news-list is-all" id="news-list">
                 @foreach ($noticias as $n)
                 <a href="{{ $n->url() }}" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
-                  <img class="card__image" src="{{ asset($n->imagem) }}" alt="{{ $n->imagem_alt ?? $n->titulo }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" style="object-position: {{ $n->imagem_posicao ?? 'center' }};">
+                  <img class="card__image" src="{{ asset($n->imagem) }}" alt="{{ $n->imagem_alt ?? $n->titulo }}" @if ($n->imagem_largura) width="{{ $n->imagem_largura }}" height="{{ $n->imagem_altura }}" @endif loading="{{ $loop->first ? 'eager' : 'lazy' }}" style="object-position: {{ $n->imagem_posicao ?? 'center' }};">
                   <div class="card__body">
                     <span class="card__tag">{{ $n->categoria }}</span>
                     <div class="card__date">{{ $n->publicado_em->translatedFormat('j \d\e F \d\e Y') }}</div>
@@ -65,6 +154,7 @@
             </div>
         </div>
     </section>
+</main>
 @endsection
 
 @push('scripts')
@@ -79,20 +169,6 @@
     <title>Notícias Oficiais — Chapecoense Futsal</title>
     <meta name="description"
         content="Acompanhe todas as novidades, jogos, contratações e notícias da Associação Chapecoense de Futsal.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
-  <link rel="stylesheet" href="css/index.css?v=20260927">
-    <link rel="stylesheet" href="css/components.css?v=20260927">
-    <link rel="icon" href="images/logomarca.webp" type="image/webp">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:site_name" content="Chapecoense Futsal">
-    <meta property="og:title" content="Notícias Oficiais — Chapecoense Futsal">
-    <meta property="og:description"
-        content="Acompanhe todas as novidades, jogos, contratações e notícias da Associação Chapecoense de Futsal.">
-    <meta property="og:image" content="images/logomarca.webp">
     <meta name="theme-color" content="#006b3f">
     <noscript><style>[data-animate] { opacity: 1 !important; }</style></noscript>
     <style>

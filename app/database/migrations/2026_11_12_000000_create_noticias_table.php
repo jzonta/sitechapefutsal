@@ -18,6 +18,9 @@ return new class extends Migration
             $table->longText('corpo');
             $table->string('imagem')->nullable();        // caminho relativo a public/
             $table->string('imagem_alt')->nullable();
+            $table->unsignedSmallInteger('imagem_largura')->nullable();
+            $table->unsignedSmallInteger('imagem_altura')->nullable();
+            $table->string('imagem_banner')->nullable();     // imagem do banner da home (padrão: a imagem principal)
             $table->string('imagem_posicao', 40)->nullable(); // object-position do hero
             $table->longText('sidebar_html')->nullable();   // caixas laterais (HTML)
             $table->timestamp('publicado_em')->nullable()->index();
