@@ -1,0 +1,359 @@
+/* =============================================
+   CHAPEFUTSAL - Main JavaScript
+   ============================================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initAnnounceBar();
+    initHeader();
+    initMobileMenu();
+    initNewsletterForm();
+    initContactForm();
+    initScrollAnimations();
+    setActiveNav();
+    initBannerCycle();
+    initGameCountdown();
+});
+
+/* ---------- Next game countdown ---------- */
+function initGameCountdown() {
+    const el = document.querySelector('[data-countdown]');
+    if (!el) return;
+
+    const target = new Date(el.dataset.countdown);
+    if (isNaN(target.getTime())) return;
+
+    const setText = (html) => {
+        const t = el.querySelector('.game-card__countdown-text');
+        if (t) t.innerHTML = html;
+    };
+
+    const render = () => {
+        const diff = target.getTime() - Date.now();
+
+        // Kickoff passed: show a live/closed state and stop ticking.
+        if (diff <= 0) {
+            if (diff > -3 * 60 * 60 * 1000) {
+                setText('Jogo em andamento');
+            } else {
+                setText('Aguardando próximo jogo');
+            }
+            return false;
+        }
+
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+
+        if (days > 1) {
+            setText(`Faltam <strong>${days} dias</strong>`);
+        } else if (days === 1) {
+            setText('Falta <strong>1 dia</strong>');
+        } else if (hours > 0) {
+            setText(`Faltam <strong>${hours}h ${mins}min</strong>`);
+        } else {
+            setText(`Faltam <strong>${mins} min</strong>`);
+        }
+        return true;
+    };
+
+    if (render() === false) return;
+    setInterval(render, 60000);
+}
+
+/* ---------- Banner animation cycle ---------- */
+function initBannerCycle() {
+    const layers = document.querySelectorAll('.hero-banner__layer');
+    const cta = document.querySelector('.hero-banner__cta');
+    if (!layers.length) return;
+
+    const VISIBLE_DURATION = 8000;  // 8s visible
+    const EXIT_DURATION = 1000;     // 1s for exit animations to complete
+
+    // First entrance
+    layers.forEach(layer => layer.classList.add('animate-in'));
+    if (cta) cta.classList.add('animate-in');
+
+    // After CTA finishes entrance (~3.3s), mark it as permanently visible
+    if (cta) {
+        setTimeout(() => {
+            cta.classList.remove('animate-in');
+            cta.classList.add('visible');
+        }, 3500);
+    }
+
+    // Start the cycling loop
+    setTimeout(() => {
+        cycleBanner(layers, VISIBLE_DURATION, EXIT_DURATION);
+    }, VISIBLE_DURATION);
+}
+
+function cycleBanner(layers, visibleDuration, exitDuration) {
+    // Trigger exit — layers stay at opacity 1 via .animate-out CSS
+    layers.forEach(layer => {
+        layer.classList.remove('animate-in');
+        layer.classList.add('animate-out');
+    });
+
+    // After exit completes, reset and re-enter
+    setTimeout(() => {
+        layers.forEach(layer => {
+            layer.classList.remove('animate-out');
+            layer.style.opacity = '0';
+            // Force reflow to restart animation
+            void layer.offsetWidth;
+            layer.classList.add('animate-in');
+        });
+
+        // Schedule next cycle
+        setTimeout(() => {
+            cycleBanner(layers, visibleDuration, exitDuration);
+        }, visibleDuration);
+    }, exitDuration);
+}
+
+/* ---------- Announcement bar (topo de todas as páginas) ----------
+   Para trocar o aviso, altere ANNOUNCE (e o id, para reexibir a quem fechou).
+   Para remover, defina ANNOUNCE = null. */
+const ANNOUNCE = {
+    id: 'vice-copa-sul-2026',
+    href: '/noticia81.html',
+    title: 'Vice-campeã da Copa Sul 2026',
+    detail: 'Primeira final da história em competição da CBFS',
+    cta: 'Ler matéria'
+};
+
+function initAnnounceBar() {
+    if (!ANNOUNCE) return;
+    const storageKey = 'announce-closed';
+    try {
+        if (localStorage.getItem(storageKey) === ANNOUNCE.id) return;
+    } catch (e) { /* storage indisponível: mostra a faixa */ }
+
+    const bar = document.createElement('div');
+    bar.className = 'announce-bar';
+    bar.innerHTML = `
+        <a class="announce-bar__link" href="${ANNOUNCE.href}">
+            <span class="material-icons-outlined">emoji_events</span>
+            <strong>${ANNOUNCE.title}</strong>
+            <span class="announce-bar__detail">— ${ANNOUNCE.detail} ·</span>
+            <span class="announce-bar__cta">${ANNOUNCE.cta}</span>
+        </a>
+        <button class="announce-bar__close" type="button" aria-label="Fechar aviso">
+            <span class="material-icons-outlined" style="font-size:18px;">close</span>
+        </button>`;
+
+    bar.querySelector('.announce-bar__close').addEventListener('click', () => {
+        bar.remove();
+        document.documentElement.classList.remove('has-announce');
+        try { localStorage.setItem(storageKey, ANNOUNCE.id); } catch (e) { /* ignora */ }
+    });
+
+    document.body.prepend(bar);
+    document.documentElement.classList.add('has-announce');
+}
+
+/* ---------- Header scroll effect ---------- */
+function initHeader() {
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+
+    const onScroll = () => {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+}
+
+/* ---------- Mobile menu ---------- */
+function initMobileMenu() {
+    const toggle = document.querySelector('.mobile-toggle');
+    const nav = document.querySelector('.nav-links');
+    if (!toggle || !nav) return;
+
+    // Páginas antigas usam <div>: torna acessível por teclado e leitor de tela.
+    if (toggle.tagName !== 'BUTTON') {
+        toggle.setAttribute('role', 'button');
+        toggle.setAttribute('tabindex', '0');
+    }
+    if (!nav.id) nav.id = 'nav-links';
+    toggle.setAttribute('aria-controls', nav.id);
+    if (!toggle.getAttribute('aria-label')) toggle.setAttribute('aria-label', 'Abrir menu');
+
+    const setOpen = (open) => {
+        toggle.classList.toggle('open', open);
+        nav.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+        document.body.style.overflow = open ? 'hidden' : '';
+    };
+    setOpen(false);
+
+    toggle.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+
+    toggle.addEventListener('keydown', (e) => {
+        if (toggle.tagName !== 'BUTTON' && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            setOpen(!nav.classList.contains('open'));
+        }
+    });
+
+    // Close on link click
+    nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => setOpen(false));
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target) && !toggle.contains(e.target) && nav.classList.contains('open')) {
+            setOpen(false);
+        }
+    });
+
+    // Close on Escape, returning focus to the toggle
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && nav.classList.contains('open')) {
+            setOpen(false);
+            toggle.focus();
+        }
+    });
+}
+
+/* ---------- Newsletter form ---------- */
+function initNewsletterForm() {
+    const form = document.querySelector('.newsletter__form');
+    if (!form) return;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = form.querySelector('.newsletter__input');
+        const email = input ? input.value.trim() : '';
+
+        if (!email || !isValidEmail(email)) {
+            showToast('Por favor, insira um e-mail válido.', 'error');
+            return;
+        }
+
+        showToast('Inscrição realizada com sucesso! 🎉', 'success');
+        if (input) input.value = '';
+    });
+}
+
+/* ---------- Contact form ---------- */
+function initContactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = form.querySelector('#contact-name');
+        const email = form.querySelector('#contact-email');
+        const message = form.querySelector('#contact-message');
+
+        if (!name?.value.trim()) {
+            showToast('Por favor, informe seu nome.', 'error');
+            return;
+        }
+
+        if (!email?.value.trim() || !isValidEmail(email.value)) {
+            showToast('Por favor, insira um e-mail válido.', 'error');
+            return;
+        }
+
+        if (!message?.value.trim()) {
+            showToast('Por favor, escreva uma mensagem.', 'error');
+            return;
+        }
+
+        showToast('Mensagem enviada com sucesso! Entraremos em contato em breve. ✉️', 'success');
+        form.reset();
+    });
+}
+
+/* ---------- Scroll animations ---------- */
+function initScrollAnimations() {
+    const elements = document.querySelectorAll('[data-animate]');
+    if (!elements.length) return;
+
+    // Sem animação para quem prefere movimento reduzido ou sem IntersectionObserver.
+    if (!('IntersectionObserver' in window) ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const delay = entry.target.dataset.delay || 0;
+                setTimeout(() => {
+                    entry.target.classList.add('animate-fade-in-up');
+                    entry.target.style.opacity = '1';
+                }, delay);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    elements.forEach(el => {
+        el.style.opacity = '0';
+        observer.observe(el);
+    });
+}
+
+/* ---------- Active nav link ---------- */
+function setActiveNav() {
+    const path = window.location.pathname.replace(/\/$/, '') || '/';
+
+    document.querySelectorAll('.nav-links a:not(.nav-cta)').forEach(link => {
+        let linkPath;
+        try { linkPath = new URL(link.href, window.location.origin).pathname.replace(/\/$/, '') || '/'; }
+        catch (e) { return; }
+        if (linkPath === path) {
+            link.classList.add('active');
+        }
+    });
+}
+
+/* ---------- Helpers ---------- */
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function showToast(message, type = 'success') {
+    // Remove existing toasts
+    document.querySelectorAll('.toast').forEach(t => t.remove());
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast--${type}`;
+    toast.textContent = message;
+
+    Object.assign(toast.style, {
+        position: 'fixed',
+        bottom: '24px',
+        right: '24px',
+        padding: '14px 24px',
+        borderRadius: '8px',
+        color: '#fff',
+        fontFamily: 'var(--font-family)',
+        fontSize: '14px',
+        fontWeight: '600',
+        zIndex: '10000',
+        animation: 'fadeInUp 0.3s ease',
+        maxWidth: '400px',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+        background: type === 'success' ? '#16a34a' : '#dc2626',
+    });
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}

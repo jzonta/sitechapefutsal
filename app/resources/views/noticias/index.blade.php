@@ -1,0 +1,2026 @@
+@extends('layouts.app')
+
+@section('title', 'Notícias — Chapecoense Futsal')
+@section('description', 'Acompanhe o dia a dia do Verdão das Quadras: cobertura de jogos, contratações e comunicados oficiais da Chapecoense Futsal.')
+
+@push('head')
+    <style>[data-animate] { opacity: 1 !important; }</style>
+@endpush
+
+@section('content')
+    <section class="hero hero--compact">
+        <div class="hero__bg">
+            <img src="/images/fotos/IMG_4346.webp" alt="" fetchpriority="high"
+                style="width:100%;height:100%;object-fit:cover;object-position:center 15%;">
+        </div>
+        <!-- overlay verde com granulado -->
+        <div style="position:absolute;inset:0;z-index:1;">
+            <div
+                style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,77,45,0.65) 0%,rgba(0,107,63,0.45) 100%);">
+            </div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;opacity:0.55;"
+                xmlns="http://www.w3.org/2000/svg">
+                <filter id="grain">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" />
+                    <feColorMatrix type="saturate" values="0" />
+                    <feBlend in="SourceGraphic" mode="multiply" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#grain)" opacity="1" />
+            </svg>
+        </div>
+        <div class="hero__overlay" style="background:rgba(0,0,0,0.1);"></div>
+        <div class="hero__content" style="text-align:center;max-width:100%;position:relative;z-index:2;">
+            <div class="hero__badge" style="margin:0 auto var(--space-6);">
+                <span class="material-icons-outlined" aria-hidden="true" style="font-size:16px;">feed</span>
+                Fique por dentro
+            </div>
+            <h1 class="hero__title" style="max-width:100%;margin:0 auto var(--space-4);">Notícias Oficiais</h1>
+            <p class="hero__subtitle" style="max-width:700px;margin:0 auto;">Acompanhe o dia a dia do Verdão das Quadras, cobertura de jogos, contratações e comunicados importantes.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="visually-hidden">Todas as notícias</h2>
+            <div class="news-filter" id="news-filter" hidden>
+                <ul class="news-filter__chips" id="news-filter-chips" aria-label="Filtrar notícias por categoria"></ul>
+                <p class="news-filter__count" id="news-filter-count" role="status" aria-live="polite"></p>
+            </div>
+            <div class="grid grid-3 gap-8 news-list is-all" id="news-list">
+                @foreach ($noticias as $n)
+                <a href="{{ $n->url() }}" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" src="{{ asset($n->imagem) }}" alt="{{ $n->imagem_alt ?? $n->titulo }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" style="object-position: {{ $n->imagem_posicao ?? 'center' }};">
+                  <div class="card__body">
+                    <span class="card__tag">{{ $n->categoria }}</span>
+                    <div class="card__date">{{ $n->publicado_em->translatedFormat('j \d\e F \d\e Y') }}</div>
+                    <h3 class="card__title">{{ $n->titulo }}</h3>
+                    <p class="card__text">{{ $n->resumo }}</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+@endsection
+
+@push('scripts')
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WK61JGEQ65');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícias Oficiais — Chapecoense Futsal</title>
+    <meta name="description"
+        content="Acompanhe todas as novidades, jogos, contratações e notícias da Associação Chapecoense de Futsal.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
+  <link rel="stylesheet" href="css/index.css?v=20260927">
+    <link rel="stylesheet" href="css/components.css?v=20260927">
+    <link rel="icon" href="images/logomarca.webp" type="image/webp">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Chapecoense Futsal">
+    <meta property="og:title" content="Notícias Oficiais — Chapecoense Futsal">
+    <meta property="og:description"
+        content="Acompanhe todas as novidades, jogos, contratações e notícias da Associação Chapecoense de Futsal.">
+    <meta property="og:image" content="images/logomarca.webp">
+    <meta name="theme-color" content="#006b3f">
+    <noscript><style>[data-animate] { opacity: 1 !important; }</style></noscript>
+    <style>
+        /* ---- Listagem de notícias ---- */
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+            overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+        }
+
+        /* Filtro por categoria (montado por JS; sem JS a lista segue completa) */
+        .news-filter { margin-bottom: var(--space-8); }
+        .news-filter[hidden] { display: none; }
+        .news-filter__chips {
+            display: flex; flex-wrap: wrap; gap: var(--space-2);
+            margin: 0; padding: 0; list-style: none;
+        }
+        .news-filter__chip {
+            font: inherit; font-size: var(--font-size-sm); font-weight: 500; line-height: 1.2;
+            min-height: 44px; padding: var(--space-2) var(--space-4); white-space: nowrap;
+            color: var(--color-text-secondary); background: var(--color-surface);
+            border: 1px solid var(--color-border); border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+        }
+        .news-filter__chip:hover { border-color: var(--color-green); color: var(--color-green); }
+        .news-filter__chip[aria-pressed="true"] {
+            background: var(--color-green); border-color: var(--color-green); color: var(--color-surface);
+        }
+        .news-filter__chip:focus-visible,
+        .news-list > .card:focus-visible {
+            outline: 3px solid var(--color-green); outline-offset: 3px;
+        }
+        .news-filter__count {
+            margin: var(--space-4) 0 0; font-size: var(--font-size-sm); color: var(--color-text-muted);
+        }
+        @media (max-width: 640px) {
+            .news-filter__chips {
+                flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity;
+                margin-inline: calc(var(--space-4) * -1); padding-inline: var(--space-4);
+                padding-bottom: var(--space-2); scrollbar-width: thin;
+            }
+            .news-filter__chip { flex: none; scroll-snap-align: start; }
+        }
+
+        /* Cards: altura igual por linha, link de leitura sempre na base */
+        .news-list > .card { display: flex !important; flex-direction: column; }
+        .news-list > .card[hidden] { display: none !important; }
+        .news-list .card__body { display: flex; flex-direction: column; align-items: flex-start; flex: 1; }
+        .news-list .card__title { text-wrap: balance; line-height: 1.3; }
+        .news-list .card__text {
+            display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+            line-clamp: 3; overflow: hidden;
+        }
+        .news-list .card__link { margin-top: auto; }
+        .news-list .card:hover .card__link,
+        .news-list .card__link:hover { color: var(--color-green-dark); }
+        .news-list .card__image { aspect-ratio: 16 / 9; height: auto; max-height: 220px; }
+        .news-list .card__date { font-variant-numeric: tabular-nums; }
+
+        /* Matéria mais recente em destaque (a primeira do grid, qualquer que seja) */
+        @media (min-width: 641px) {
+            .news-list.is-all > .card:first-child { grid-column: 1 / -1; }
+            .news-list.is-all > .card:first-child .card__image { aspect-ratio: 21 / 9; max-height: 340px; }
+            .news-list.is-all > .card:first-child .card__title { font-size: var(--font-size-2xl); }
+            .news-list.is-all > .card:first-child .card__text { font-size: var(--font-size-base); -webkit-line-clamp: 4; line-clamp: 4; }
+        }
+        @media (min-width: 769px) {
+            .news-list.is-all > .card:first-child { flex-direction: row; }
+            .news-list.is-all > .card:first-child .card__image {
+                width: 56%; height: auto; max-height: none; aspect-ratio: auto; min-height: 320px; flex: none;
+            }
+            .news-list.is-all > .card:first-child .card__body {
+                justify-content: center; padding: var(--space-8);
+            }
+            .news-list.is-all > .card:first-child .card__link { margin-top: var(--space-2); }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .news-list.is-all > .card:first-child .card__image { width: 46%; }
+            .news-list.is-all > .card:first-child .card__title { font-size: var(--font-size-xl); }
+            .news-list.is-all > .card:first-child .card__body { padding: var(--space-6); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .news-list > .card { transition: none; }
+            .news-list > .card:hover { transform: none; }
+            .news-list .card__link { transition: none; }
+            .news-list > .card.animate-fade-in-up { animation: none; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-logo">
+                <img src="images/logomarca.webp" alt="Chapecoense Futsal" width="40" height="40">
+                <span>Chapecoense Futsal</span>
+            </a>
+            <nav class="nav-links" id="nav-links">
+                <a href="index.html">Início</a>
+                <a href="historia.html">O Clube</a>
+                <a href="elenco.html" style="display:none;">Elenco</a>
+                <a href="competicoes.html">Competições</a>
+                <a href="transparencia.html">Transparência</a>
+                <a href="contato.html">Contato</a>
+                <a href="https://chapefutsal.socioclube.com.br/associe-se.aspx" target="_blank" rel="noopener"
+                    class="btn btn--primary btn--sm nav-cta">Seja Sócio</a>
+            </nav>
+            <div class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero hero--compact">
+        <div class="hero__bg">
+            <img src="images/fotos/IMG_4346.webp" alt="" fetchpriority="high"
+                style="width:100%;height:100%;object-fit:cover;object-position:center 15%;">
+        </div>
+        <!-- overlay verde com granulado -->
+        <div style="position:absolute;inset:0;z-index:1;">
+            <div
+                style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,77,45,0.65) 0%,rgba(0,107,63,0.45) 100%);">
+            </div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;opacity:0.55;"
+                xmlns="http://www.w3.org/2000/svg">
+                <filter id="grain">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" />
+                    <feColorMatrix type="saturate" values="0" />
+                    <feBlend in="SourceGraphic" mode="multiply" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#grain)" opacity="1" />
+            </svg>
+        </div>
+        <div class="hero__overlay" style="background:rgba(0,0,0,0.1);"></div>
+        <div class="hero__content" style="text-align:center;max-width:100%;position:relative;z-index:2;">
+            <div class="hero__badge" style="margin:0 auto var(--space-6);">
+                <span class="material-icons-outlined" aria-hidden="true" style="font-size:16px;">feed</span>
+                Fique por dentro
+            </div>
+            <h1 class="hero__title" style="max-width:100%;margin:0 auto var(--space-4);">Notícias Oficiais</h1>
+            <p class="hero__subtitle" style="max-width:700px;margin:0 auto;">Acompanhe o dia a dia do Verdão das Quadras, cobertura de jogos, contratações e comunicados importantes.</p>
+        </div>
+    </section>
+
+    <!-- NOTÍCIAS LISTING -->
+    <section class="section">
+        <div class="container">
+            <h2 class="visually-hidden">Todas as notícias</h2>
+            <div class="news-filter" id="news-filter" hidden>
+                <ul class="news-filter__chips" id="news-filter-chips" aria-label="Filtrar notícias por categoria"></ul>
+                <p class="news-filter__count" id="news-filter-count" role="status" aria-live="polite"></p>
+            </div>
+            <div class="grid grid-3 gap-8 news-list is-all" id="news-list">
+                <!-- Notícia 106 -->
+                <a href="noticia106.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" src="images/noticias/noticia106-1.jpg"
+                    alt="Chapecoense Futsal intensifica preparação para jogo decisivo contra o Criciúma" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa SC</span>
+                    <div class="card__date">12 de novembro de 2026</div>
+                    <h3 class="card__title">Chapecoense Futsal intensifica preparação para jogo decisivo contra o Criciúma</h3>
+                    <p class="card__text">Verdão das Quadras busca vaga à final da Copa SC após 14 anos e conta com apoio da torcida</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                <!-- Notícia 105 -->
+                <a href="noticia105.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" src="images/noticias/noticia105-1.jpg"
+                    alt="Sub-20 da Chape Futsal está na decisão do Catarinense" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Sub-20</span>
+                    <div class="card__date">10 de novembro de 2026</div>
+                    <h3 class="card__title">Sub-20 da Chape Futsal está na decisão do Catarinense</h3>
+                    <p class="card__text">Verdão das Quadras conquistou a vaga em Blumenau e vai enfrentar Jaraguá ou Joinville na final</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                <!-- Notícia 104 -->
+                <a href="noticia104.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" src="images/noticias/noticia104-1.jpg"
+                    alt="Chape Futsal inicia venda de ingressos para decisão de vaga à final" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa SC</span>
+                    <div class="card__date">9 de novembro de 2026</div>
+                    <h3 class="card__title">Chape Futsal inicia venda de ingressos para decisão de vaga à final</h3>
+                    <p class="card__text">Verdão das Quadras recebe o Criciúma nesta sexta-feira (13), em Chapecó, pelo jogo de volta da semifinal da Copa SC</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                <!-- Notícia 103 -->
+                <a href="noticia103.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia103-1.jpg"
+                    alt="Chapecoense Futsal empata com Criciúma na semifinal da Copa SC" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa SC</span>
+                    <div class="card__date">7 de novembro de 2026</div>
+                    <h3 class="card__title">Chapecoense Futsal empata com Criciúma na semifinal da Copa SC</h3>
+                    <p class="card__text">Verdão das Quadras decide a vaga à final em casa na próxima sexta-feira em Chapecó</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 102 -->
+                <a href="noticia102.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia102-1.jpg"
+                    alt="Chapecoense Futsal enfrenta Criciúma pela semifinal da Copa SC" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa SC</span>
+                    <div class="card__date">6 de novembro de 2026</div>
+                    <h3 class="card__title">Chapecoense Futsal enfrenta Criciúma pela semifinal da Copa SC</h3>
+                    <p class="card__text">Verdão das Quadras inicia disputa por vaga à decisão neste sábado, fora de casa.</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 101 -->
+                <a href="noticia101.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia101-1.jpg"
+                    alt="Na reestreia de Agnaldo Pereira, Chape Futsal avança à semifinal do Brasileiro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">31 de outubro de 2026</div>
+                    <h3 class="card__title">Na reestreia de Agnaldo Pereira, Chape Futsal avança à semifinal do Brasileiro</h3>
+                    <p class="card__text">Verdão das Quadras chega mais uma vez entre os quatro primeiros colocados da competição nacional</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 100 -->
+                <a href="noticia100.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia100-1.jpg"
+                    alt="Chapecoense Futsal se concentra em decisão no Brasileiro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">29 de outubro de 2026</div>
+                    <h3 class="card__title">Chapecoense Futsal se concentra em decisão no Brasileiro</h3>
+                    <p class="card__text">Após despedida na Série Ouro, Verdão das Quadras recebe o Criciúma neste sábado (31), às 17h, por vaga à semifinal</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 99 -->
+                <a href="noticia99.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia99-1.jpg"
+                    alt="Chape Futsal empata em São Lourenço e se despede da Série Ouro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Série Ouro</span>
+                    <div class="card__date">29 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal empata em São Lourenço e se despede da Série Ouro</h3>
+                    <p class="card__text">Verdão das Quadras ficou no 3 a 3 no jogo de volta das quartas de final e agora foca na decisão contra o Criciúma, no sábado (31), no SESC</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                <!-- Notícia 98 -->
+                <a href="noticia98.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia98-1.jpg"
+                    alt="Chape Futsal inicia venda de ingressos para decisão contra o Criciúma" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">26 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal inicia venda de ingressos para decisão contra o Criciúma</h3>
+                    <p class="card__text">Verdão das Quadras joga neste sábado (31), às 17h, no SESC Chapecó, por uma vaga à semifinal do Campeonato Brasileiro</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                <!-- Notícia 97 -->
+                <a href="noticia97.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia97-1.jpg"
+                    alt="Chape Futsal vence em Criciúma e abre vantagem nas quartas do Brasileiro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">25 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal vence em Criciúma e abre vantagem nas quartas do Brasileiro</h3>
+                    <p class="card__text">Verdão das Quadras derrotou o Criciúma por 2 a 1, no jogo de ida das quartas de final, e joga pelo empate no próximo sábado (31), no SESC</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                <!-- Notícia 96 -->
+                <a href="noticia96.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia96-1.jpg"
+                    alt="Chape Futsal inicia disputa por vaga na semifinal do Brasileiro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">23 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal inicia disputa por vaga na semifinal do Brasileiro</h3>
+                    <p class="card__text">Verdão das Quadras enfrenta o Criciúma, fora de casa, pela ida das quartas de final. Jogo decisivo será no dia 31 de outubro, em Chapecó</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 95 -->
+                <a href="noticia95.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia95-1.jpg"
+                    alt="Em jogo eletrizante, Chape Futsal é superada em casa" style="object-position: center 60%;">
+                  <div class="card__body">
+                    <span class="card__tag">Série Ouro</span>
+                    <div class="card__date">20 de outubro de 2026</div>
+                    <h3 class="card__title">Em jogo eletrizante, Chape Futsal é superada em casa</h3>
+                    <p class="card__text">Verdão das Quadras jogou pela ida das quartas de final do Catarinense Série Ouro</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 94 -->
+                <a href="noticia94.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia94-1.jpg"
+                    alt="Chapecoense Futsal anuncia retorno do fixo Luiz Garcez" style="object-position: center 20%;">
+                  <div class="card__body">
+                    <span class="card__tag">Contratação</span>
+                    <div class="card__date">20 de outubro de 2026</div>
+                    <h3 class="card__title">Chapecoense Futsal anuncia retorno do fixo Luiz Garcez</h3>
+                    <p class="card__text">Jogador de 24 anos integrou o elenco em 2025 e está à disposição para enfrentar o São Lourenço nesta terça-feira (20)</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 93 -->
+                <a href="noticia93.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia93-1.jpg"
+                    alt="Chape Futsal começa a disputar uma vaga à semifinal da Série Ouro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Série Ouro</span>
+                    <div class="card__date">20 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal começa a disputar uma vaga à semifinal da Série Ouro</h3>
+                    <p class="card__text">Verdão das Quadras recebe o São Lourenço nesta terça-feira (20), às 19h30, no Ginásio Plínio Arlindo De Nes (SER Aurora), em Chapecó, pelo jogo de ida das quartas de final do Catarinense</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 92 -->
+                <a href="noticia92.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia92-1.jpg"
+                    alt="Chape Futsal intensifica preparação para as quartas de final da Série Ouro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Série Ouro</span>
+                    <div class="card__date">17 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal intensifica preparação para as quartas de final da Série Ouro</h3>
+                    <p class="card__text">Verdão das Quadras recebe o São Lourenço nesta terça-feira (20), às 19h30, na SER Aurora, em Chapecó, pela disputa de uma vaga à semifinal do Catarinense</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 91 -->
+                <a href="noticia91.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia91-1.jpg"
+                    alt="Chape Futsal abre venda de ingressos para o mata-mata da Série Ouro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Série Ouro</span>
+                    <div class="card__date">16 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal abre venda de ingressos para o mata-mata da Série Ouro</h3>
+                    <p class="card__text">Verdão das Quadras recebe o Lourenço nesta terça-feira (20), às 19h30, no ginásio da SER Aurora, pela disputa de uma vaga à semifinal</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                <!-- Notícia 90 -->
+                <a href="noticia90.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia90-1.jpg"
+                    alt="Mais de mil crianças são atendidas com ação em jogo da Chape Futsal" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">12 de outubro de 2026</div>
+                    <h3 class="card__title">Mais de mil crianças são atendidas com ação em jogo da Chape Futsal</h3>
+                    <p class="card__text">Torcedores trocaram o ingresso por um brinquedo na vitória sobre o Fazenda, no SESC, e doações serão destinadas a 20 entidades de Chapecó</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 89 -->
+                <a href="noticia89.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia89-1.jpg"
+                    alt="Chape Futsal goleia Fazenda e termina 1ª fase do Brasileiro em terceiro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">10 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal goleia Fazenda e termina 1ª fase do Brasileiro em terceiro</h3>
+                    <p class="card__text">Verdão das Quadras enfrentará o Criciúma nas quartas de final e decidirá a classificação em casa</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+                <!-- Notícia 88 -->
+                <a href="noticia88.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia88-1.jpg"
+                    alt="Chape Futsal decide liderança no Estadual e fecha Brasileiro com ingresso em troca de brinquedo" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">7 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal decide liderança no Estadual e fecha Brasileiro com ingresso em troca de brinquedo</h3>
+                    <p class="card__text">Ação social é realizada para a partida de sábado (10), no SESC Chapecó, pela competição nacional. Antes, Verdão das Quadras tem jogo da Série Ouro em Pouso Redondo, nesta quarta (7)</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 87 -->
+                <a href="noticia87.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia87-1.jpg"
+                    alt="Prefeitura de Chapecó/Chapecoense/Unochapecó na semifinal do Catarinense Sub-20" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Sub-20</span>
+                    <div class="card__date">7 de outubro de 2026</div>
+                    <h3 class="card__title">Prefeitura de Chapecó/Chapecoense/Unochapecó na semifinal do Catarinense Sub-20</h3>
+                    <p class="card__text">Verdão das Quadras vence Caçador por 7 a 2 fora de casa e avança com agregado de 16 a 5</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 86 -->
+                <a href="noticia86.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia86-1.jpg"
+                    alt="Chape Futsal está classificada ao mata-mata do Brasileiro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">5 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal está classificada ao mata-mata do Brasileiro</h3>
+                    <p class="card__text">Verdão das Quadras mostrou superioridade e venceu o Magé no ginásio do SESC</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 85 -->
+                <a href="noticia85.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia85-1.jpg"
+                    alt="Chape Futsal joga no SESC pelo Campeonato Brasileiro" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Brasileiro</span>
+                    <div class="card__date">3 de outubro de 2026</div>
+                    <h3 class="card__title">Chape Futsal joga no SESC pelo Campeonato Brasileiro</h3>
+                    <p class="card__text">Verdão das Quadras busca vitória sobre o Magé (RJ) para subir na tabela de classificação</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 84 -->
+                <a href="noticia84.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia84-1.jpg"
+                    alt="Chapecoense Futsal recebe agradecimento oficial do Criciúma" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">2 de outubro de 2026</div>
+                    <h3 class="card__title">Chapecoense Futsal recebe agradecimento oficial do Criciúma</h3>
+                    <p class="card__text">Documento destaca suporte logístico oferecido pelo Verdão das Quadras para viabilizar a participação da equipe do Sul do Estado na Copa Sul</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 83 -->
+                <a href="noticia83.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia83-1.jpg"
+                    alt="Chape Futsal vence novamente e se classifica à semifinal da Copa SC" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa SC</span>
+                    <div class="card__date">30 de setembro de 2026</div>
+                    <h3 class="card__title">Chape Futsal vence novamente e se classifica à semifinal da Copa SC</h3>
+                    <p class="card__text">Verdão das Quadras derrotou Rio do Sul e carimbou a vaga diante da torcida. Foi o 16º jogo da equipe do Oeste em setembro</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 82 -->
+                <a href="noticia82.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia82-1.jpg"
+                    alt="No 16º jogo em setembro, Chape Futsal decide vaga à semifinal da Copa SC" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa SC</span>
+                    <div class="card__date">30 de setembro de 2026</div>
+                    <h3 class="card__title">No 16º jogo em setembro, Chape Futsal decide vaga à semifinal da Copa SC</h3>
+                    <p class="card__text">Verdão das Quadras venceu a partida de ida, em Rio do Sul, e conquistou a vantagem do empate. Torcida tem à disposição venda de "ingresso casado"</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 81 -->
+                <a href="noticia81.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia81-1.jpg"
+                    alt="Chape Futsal é vice-campeã da Copa Sul" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">27 de setembro de 2026</div>
+                    <h3 class="card__title">Chape Futsal é vice-campeã da Copa Sul</h3>
+                    <p class="card__text">Verdão das Quadras chegou pela primeira vez a uma final de competição promovida pela CBFS</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 80 -->
+                <a href="noticia80.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia80-1.jpg"
+                    alt="Chapecoense Futsal decide título inédito da Copa Sul em Xanxerê" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">27 de setembro de 2026</div>
+                    <h3 class="card__title">Chapecoense Futsal decide título inédito da Copa Sul em Xanxerê</h3>
+                    <p class="card__text">Final será neste domingo (27), às 16h, na Arena Ivo Sguissardi. Pela frente estará o forte time de Campo Mourão. Sócio do Verdão das Quadras não paga</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 79 -->
+                <a href="noticia79.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia79-1.jpg"
+                    alt="Com emoção, Chape Futsal avança à final da Copa Sul" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">26 de setembro de 2026</div>
+                    <h3 class="card__title">Com emoção, Chape Futsal avança à final da Copa Sul</h3>
+                    <p class="card__text">Verdão das Quadras derrotou o Passo Fundo de virada na semifinal</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 78 -->
+                <a href="noticia78.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia78-1.jpg"
+                    alt="Chape Futsal lança venda “casada” de ingressos para jogos decisivos" style="object-position: center 40%;">
+                  <div class="card__body">
+                    <span class="card__tag">Ingressos</span>
+                    <div class="card__date">26 de setembro de 2026</div>
+                    <h3 class="card__title">Chape Futsal lança venda “casada” de ingressos para jogos decisivos</h3>
+                    <p class="card__text">Verdão das Quadras busca vaga à semifinal da Copa SC e tenta se aproximar da classificação no Brasileiro</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 77 -->
+                <a href="noticia77.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia77-1.jpg"
+                    alt="Chape Futsal decide vaga à final da Copa Sul neste sábado" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">26 de setembro de 2026</div>
+                    <h3 class="card__title">Chape Futsal decide vaga à final da Copa Sul neste sábado</h3>
+                    <p class="card__text">Verdão das Quadras vive momento especial em Xanxerê e convoca a torcida para o jogo contra o Passo Fundo. Sócio do clube não paga</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 76 -->
+                <a href="noticia76.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia76-1.jpg"
+                    alt="Chape Futsal garante vaga na semifinal da Copa Sul e encara o Passo Fundo neste sábado" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">26 de setembro de 2026</div>
+                    <h3 class="card__title">Chape Futsal garante vaga na semifinal da Copa Sul e encara o Passo Fundo neste sábado</h3>
+                    <p class="card__text">Mesmo com a derrota por 1 a 0 para o Campo Mourão, Verdão das Quadras avança no Grupo 2 e segue na briga pelo título em Xanxerê</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 75 -->
+                <a href="noticia75.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia75-1.jpg"
+                    alt="Chape Futsal se recupera na Copa Sul e decide vaga nesta sexta" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">25 de setembro de 2026</div>
+                    <h3 class="card__title">Chape Futsal se recupera na Copa Sul e decide vaga nesta sexta</h3>
+                    <p class="card__text">Verdão das Quadras vence o Caçador pela segunda rodada e agora enfrenta Campo Mourão no fechamento da primeira fase</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 74 -->
+                <a href="noticia74.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia74-1.jpg"
+                    alt="Chape Futsal é superada na estreia e busca recuperação nesta quinta" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">23 de setembro de 2026</div>
+                    <h3 class="card__title">Chape Futsal é superada na estreia e busca recuperação nesta quinta</h3>
+                    <p class="card__text">Verdão das Quadras encarou Guaporé (RS) e volta a jogar contra o Caçador (SC). Torneio é disputado em Xanxerê</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 73 -->
+                <a href="noticia73.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia73-1.jpg"
+                    alt="CBFS realiza congresso técnico da 16ª Copa Sul" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Copa Sul</span>
+                    <div class="card__date">23 de setembro de 2026</div>
+                    <h3 class="card__title">CBFS realiza congresso técnico da 16ª Copa Sul</h3>
+                    <p class="card__text">Encontro reuniu representantes das equipes participantes e da CBFS para definir os últimos detalhes da competição em Xanxerê</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 72 -->
+                <a href="noticia72.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                  <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia72-1.jpg"
+                    alt="Com Chape Futsal como anfitriã, Copa Sul movimenta Xanxerê. Passaporte de ingressos é opção para torcida" style="object-position: center;">
+                  <div class="card__body">
+                    <span class="card__tag">Ingressos</span>
+                    <div class="card__date">22 de setembro de 2026</div>
+                    <h3 class="card__title">Com Chape Futsal como anfitriã, Copa Sul movimenta Xanxerê. Passaporte de ingressos é opção para torcida</h3>
+                    <p class="card__text">Torneio começa nesta quarta-feira (23) na Arena Ivo Sguissardi. Verdão das Quadras busca vaga para a Copa dos Campeões</p>
+                    <span class="card__link">
+                      Ler matéria completa
+                      <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                    </span>
+                  </div>
+                </a>
+
+                <!-- Notícia 71 -->
+                <a href="noticia71.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia71-1.jpg"
+                        alt="Chape vence Pinhalzinho e coloca Chapecó na fase estadual dos JASC no futsal masculino" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">JASC</span>
+                        <div class="card__date">20 de setembro de 2026</div>
+                        <h3 class="card__title">Chape vence Pinhalzinho e coloca Chapecó na fase estadual dos JASC no futsal masculino</h3>
+                        <p class="card__text">Verdão das Quadras garantiu uma das três vagas do Oeste para a competição que será em novembro na cidade de Rio do Sul</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 70 -->
+                <a href="noticia70.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia70-1.jpg"
+                        alt="Chape Futsal define venda de ingressos físicos para a Copa Sul" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Ingressos</span>
+                        <div class="card__date">19 de setembro de 2026</div>
+                        <h3 class="card__title">Chape Futsal define venda de ingressos físicos para a Copa Sul</h3>
+                        <p class="card__text">Bilhetes estarão disponíveis em dois pontos em Chapecó, além da Arena Ivo Sguissardi, em Xanxerê, palco do torneio</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 69 -->
+                <a href="noticia69.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia69-1.jpg"
+                        alt="Com vários jovens, Chapecoense Futsal luta até o fim no Piauí" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">17 de setembro de 2026</div>
+                        <h3 class="card__title">Com vários jovens, Chapecoense Futsal luta até o fim no Piauí</h3>
+                        <p class="card__text">Verdão das Quadras vende caro o revés no Brasileiro para o Atlético-PI, vencedor da última edição e que no domingo conquistou a Taça Brasil</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 68 -->
+                <a href="noticia68.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia68-1.jpg"
+                        alt="Chape Futsal vence mais uma na fase regional dos JASC" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">JASC</span>
+                        <div class="card__date">17 de setembro de 2026</div>
+                        <h3 class="card__title">Chape Futsal vence mais uma na fase regional dos JASC</h3>
+                        <p class="card__text">Verdão das Quadras bate Cunha Porã por 4 a 1 e mantém liderança do grupo B</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 67 -->
+                <a href="noticia67.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia67-1.jpg"
+                        alt="Chape Futsal enfrenta o Atlético-PI pelo Brasileiro fora de casa" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">17 de setembro de 2026</div>
+                        <h3 class="card__title">Chape Futsal enfrenta o Atlético-PI pelo Brasileiro fora de casa</h3>
+                        <p class="card__text">Verdão das Quadras joga nesta quinta-feira (17), às 20h, em Teresina</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 66 -->
+                <a href="noticia66.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia66-1.jpg"
+                        alt="Chape Futsal abre venda online de ingressos para a Copa Sul" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Ingressos</span>
+                        <div class="card__date">16 de setembro de 2026</div>
+                        <h3 class="card__title">Chape Futsal abre venda online de ingressos para a Copa Sul</h3>
+                        <p class="card__text">Torneio será disputado na Arena Ivo Sguissardi, em Xanxerê. Já é possível garantir lugar no ginásio pelo site ingressojogo.com.br</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 65 -->
+                <a href="noticia65.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia65-1.jpg"
+                        alt="Chape Futsal defende Chapecó na fase regional dos JASC" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">JASC</span>
+                        <div class="card__date">16 de setembro de 2026</div>
+                        <h3 class="card__title">Chape Futsal defende Chapecó na fase regional dos JASC</h3>
+                        <p class="card__text">Verdão das Quadras busca vaga à etapa estadual para o município</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 64 -->
+                <a href="noticia64.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia64-1.jpg"
+                        alt="Sucesso Absoluto: 3ª Feijoada da Chape Futsal reúne 2,5 mil pessoas e bate recorde de público" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Evento</span>
+                        <div class="card__date">14 de setembro de 2026</div>
+                        <h3 class="card__title">Sucesso Absoluto: 3ª Feijoada da Chape Futsal reúne 2,5 mil pessoas e bate recorde de público</h3>
+                        <p class="card__text">O crescimento do evento reflete o envolvimento direto da comunidade chapecoense, que abraçou de forma definitiva o projeto da modalidade</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 63 -->
+                <a href="noticia63.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia63-1.jpg"
+                        alt="Chape Futsal vence Rio do Sul e abre vantagem na Copa SC" style="object-position: center 25%;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">12 de setembro de 2026</div>
+                        <h3 class="card__title">Chape Futsal vence Rio do Sul e abre vantagem na Copa SC</h3>
+                        <p class="card__text">Verdão das Quadras conquista importante resultado rumo à semifinal</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 62 -->
+                <a href="noticia62.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia62-1.jpg"
+                        alt="Chape Futsal é superada na Série Ouro, mas mantém liderança, e agora encara mata-mata da Copa SC" style="object-position: center 35%;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">10 de setembro de 2026</div>
+                        <h3 class="card__title">Chape Futsal é superada na Série Ouro, mas mantém liderança, e agora encara mata-mata da Copa SC</h3>
+                        <p class="card__text">Verdão das Quadras jogou na noite desta quinta-feira (10) em Tubarão e nesta sexta (11) tem compromisso em Rio do Sul</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 61 -->
+                <a href="noticia61.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia61-1.jpg"
+                        alt="Com lágrimas e abraço, ala da Chape Futsal reencontra tios após longa viagem" style="object-position: center 35%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">7 de setembro de 2026</div>
+                        <h3 class="card__title">Com lágrimas e abraço, ala da Chape Futsal reencontra tios após longa viagem</h3>
+                        <p class="card__text">Jovem Fael cruzou o País para jogo do Brasileiro e viveu momento de intensa emoção com familiares antes de a bola rolar no Amapá</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 60 -->
+                <a href="noticia60.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia60-1.jpg"
+                        alt="Chape Futsal é superada no Amapá e já foca na sequência do calendário" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">5 de setembro de 2026</div>
+                        <h3 class="card__title">Chape Futsal é superada no Amapá e já foca na sequência do calendário</h3>
+                        <p class="card__text">Agora, Verdão das Quadras defenderá a liderança na Série Ouro do Catarinense e iniciará disputa por vaga à semifinal da Copa SC</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 59 -->
+                <a href="noticia59.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia59-1.jpg"
+                        alt="Após 28 horas de viagem, Chape Futsal chega ao Amapá para buscar vice-liderança no hemisfério norte" style="object-position: center 40%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">5 de setembro de 2026</div>
+                        <h3 class="card__title">Após 28 horas de viagem, Chape Futsal chega ao Amapá para buscar vice-liderança no hemisfério norte</h3>
+                        <p class="card__text">Time verde-branco entra em quadra em ginásio que fica acima da linha do Equador na manhã deste sábado (5/9), pelo Campeonato Brasileiro</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 57 -->
+                <a href="noticia57.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia57-1.jpg"
+                        alt="Tá chegando a hora! 3ª Feijoada da Chape Futsal será no dia 12 de setembro" style="object-position: center 45%;">
+                    <div class="card__body">
+                        <span class="card__tag">Evento</span>
+                        <div class="card__date">1 de setembro de 2026</div>
+                        <h3 class="card__title">Tá chegando a hora! 3ª Feijoada da Chape Futsal será no dia 12 de setembro</h3>
+                        <p class="card__text">Objetivo é reunir 2,5 mil pessoas no Parque de Exposições Valmor Lunardi (Efapi)</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 58 -->
+                <a href="noticia58.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia58-1.jpg"
+                        alt="Chape Futsal avassaladora: vitória por 9 a 2 em jogo decisivo pela Copa SC" style="object-position: center 55%;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">29 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal avassaladora: vitória por 9 a 2 em jogo decisivo pela Copa SC</h3>
+                        <p class="card__text">Verdão das Quadras goleou Catanduvas, fora de casa, e fechou a primeira fase na liderança do grupo A</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 56 -->
+                <a href="noticia56.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia56-1.jpg"
+                        alt="Vivendo maratona de jogos, Chape Futsal decide liderança da Copa SC em Catanduvas" style="object-position: center 35%;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">28 de agosto de 2026</div>
+                        <h3 class="card__title">Vivendo maratona de jogos, Chape Futsal decide liderança da Copa SC em Catanduvas</h3>
+                        <p class="card__text">Verdão das Quadras busca a vitória fora de casa para terminar a primeira fase no topo do grupo A</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 55 -->
+                <a href="noticia55.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia55-1.jpg"
+                        alt="Chape Futsal faz 7 a 2 na ACF/Concórdia e lidera absoluta a Série Ouro" style="object-position: center 60%;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">26 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal faz 7 a 2 na ACF/Concórdia e lidera absoluta a Série Ouro</h3>
+                        <p class="card__text">Verdão das Quadras conquista grande vitória no clássico do Oeste e faz a festa diante da torcida</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 54 -->
+                <a href="noticia54.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia54-1.jpg"
+                        alt="Chape Futsal recebe ACF/Concórdia em clássico pela Série Ouro" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">26 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal recebe ACF/Concórdia em clássico pela Série Ouro</h3>
+                        <p class="card__text">Liderando a classificação, Verdão das Quadras encara mais um desafio no Campeonato Catarinense</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 53 -->
+                <a href="noticia53.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia53-1.jpg"
+                        alt="Chape Futsal é superada em Alagoas e já mira o Catarinense, onde lidera" style="object-position: center 25%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">22 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal é superada em Alagoas e já mira o Catarinense, onde lidera</h3>
+                        <p class="card__text">Verdão das Quadras encarou o Traipu, pelo Brasileiro, neste sábado (22), e nesta quarta (26) encara a ACF/Concórdia, em casa</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 52 -->
+                <a href="noticia52.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia52-1.jpg"
+                        alt="A liderança é nossa! Chape Futsal vence e volta ao topo da Série Ouro" style="object-position: center 40%;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">15 de agosto de 2026</div>
+                        <h3 class="card__title">A liderança é nossa! Chape Futsal vence e volta ao topo da Série Ouro</h3>
+                        <p class="card__text">Apoiado pela torcida, o Verdão das Quadras derrotou a Apaff/Floripa por 6 a 3</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 51 -->
+                <a href="noticia51.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia51-1.jpg"
+                        alt="Chape Futsal busca vitória para fechar mais uma rodada na liderança da Série Ouro" style="object-position: center 40%;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">14 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal busca vitória para fechar mais uma rodada na liderança da Série Ouro</h3>
+                        <p class="card__text">Verdão das Quadras joga neste sábado (15/8), às 17h, contra a Apaff/Floripa, no Ginásio Plínio De Nes (SER Aurora), em Chapecó</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 50 -->
+                <a href="noticia50.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia50-1.jpg"
+                        alt="Chape Futsal é vice-campeã de etapa classificatória dos JASC" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">JASC</span>
+                        <div class="card__date">13 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal é vice-campeã de etapa classificatória dos JASC</h3>
+                        <p class="card__text">Verdão das Quadras está classificado para a fase regional e agora foca no jogo de sábado, em casa, pela Série Ouro</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 49 -->
+                <a href="noticia49.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia49-1.jpg"
+                        alt="Chape Futsal goleia Galvão e classifica município à final do micro dos JASC" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">JASC</span>
+                        <div class="card__date">12 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal goleia Galvão e classifica município à final do micro dos JASC</h3>
+                        <p class="card__text">Verdão das Quadras representa Chapecó nos Jogos Abertos de Santa Catarina</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 48 -->
+                <a href="noticia48.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia48-1.jpg"
+                        alt="Líder da Série Ouro, Chape Futsal abre venda de ingressos para jogo contra Floripa" style="object-position: center 35%;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">11 de agosto de 2026</div>
+                        <h3 class="card__title">Líder da Série Ouro, Chape Futsal abre venda de ingressos para jogo contra Floripa</h3>
+                        <p class="card__text">Partida pelo campeonato estadual está marcada para este sábado (15), às 17h, no Ginásio Plínio De Nes (SER Aurora), em Chapecó</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 47 -->
+                <a href="noticia47.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia47-1.jpg"
+                        alt="Chape Futsal goleia Sorriso e fecha rodada na vice-liderança do Brasileiro" style="object-position: center 45%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">8 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal goleia Sorriso e fecha rodada na vice-liderança do Brasileiro</h3>
+                        <p class="card__text">Noite teve homenagens aos pais dos jogadores e seis gols no ginásio do SESC Chapecó</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 46 -->
+                <a href="noticia46.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia46-1.jpg"
+                        alt="Chape Futsal joga em casa de olho na vice-liderança do Brasileiro" style="object-position: center 45%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">7 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal joga em casa de olho na vice-liderança do Brasileiro</h3>
+                        <p class="card__text">Verdão das Quadras recebe o Sorriso, do Mato Grosso, e sobe uma posição na tabela em caso de vitória</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 45 -->
+                <a href="noticia45.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia45-1.jpg"
+                        alt="Chape Futsal convida torcida para “esquenta” antes do jogo contra o Sorriso" style="object-position: center 45%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">6 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal convida torcida para “esquenta” antes do jogo contra o Sorriso</h3>
+                        <p class="card__text">Partida pelo Brasileiro está marcada para este sábado (8/8), às 19h, no SESC Chapecó, mas a movimentação começa ainda ao meio-dia</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 44 -->
+                <a href="noticia44.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia44-1.jpg"
+                        alt="Restam apenas 700 dos 2,5 mil ingressos para a Feijoada da Chape Futsal" style="object-position: center 40%;">
+                    <div class="card__body">
+                        <span class="card__tag">Evento</span>
+                        <div class="card__date">5 de agosto de 2026</div>
+                        <h3 class="card__title">Restam apenas 700 dos 2,5 mil ingressos para a Feijoada da Chape Futsal</h3>
+                        <p class="card__text">Evento promete movimentar mais uma vez o Parque de Exposições Valmor Lunardi, no dia 12 de setembro</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 43 -->
+                <a href="noticia43.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia43-1.jpg"
+                        alt="Chape Futsal x Sorriso: ingressos já estão à venda" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">4 de agosto de 2026</div>
+                        <h3 class="card__title">Chape Futsal x Sorriso: ingressos já estão à venda</h3>
+                        <p class="card__text">Verdão das Quadras busca nova vitória no Campeonato Brasileiro para assumir a vice-liderança</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 42 -->
+                <a href="noticia42.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia42-1.jpg"
+                        alt="Chape Futsal conquista grande vitória e se recupera no Brasileirão" style="object-position: center 25%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">30 de julho de 2026</div>
+                        <h3 class="card__title">Chape Futsal conquista grande vitória e se recupera no Brasileirão</h3>
+                        <p class="card__text">Verdão das Quadras ganhou do América-MG por 4 a 1, fora de casa, e agora foca no duelo contra o Sorriso (MT), no SESC Chapecó</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 41 -->
+                <a href="noticia41.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia41-1.jpg"
+                        alt="Chape Futsal tem mais um desafio pelo Brasileiro" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">29 de julho de 2026</div>
+                        <h3 class="card__title">Chape Futsal tem mais um desafio pelo Brasileiro</h3>
+                        <p class="card__text">Verdão das Quadras enfrenta o América-MG fora de casa. Jogo terá transmissão em canal de TV para todo o Brasil e também no Youtube</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 40 -->
+                <a href="noticia40.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia40-1.jpg"
+                        alt="Chape Futsal é superada no Campeonato Brasileiro" style="object-position: center 40%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">24 de julho de 2026</div>
+                        <h3 class="card__title">Chape Futsal é superada no Campeonato Brasileiro</h3>
+                        <p class="card__text">Verdão das Quadras enfrentou o São João do Jaguaribe, do Ceará, dentro de casa</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 39 -->
+                <a href="noticia39.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia39-1.jpg"
+                        alt="Chape Futsal intensifica preparação para desafio pelo Brasileiro" style="object-position: center 40%;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">22 de julho de 2026</div>
+                        <h3 class="card__title">Chape Futsal intensifica preparação para desafio pelo Brasileiro</h3>
+                        <p class="card__text">Verdão das Quadras joga em casa nesta sexta-feira (24/7) e tem uma estreia confirmada. Ingressos estão à venda. Expectativa é de grande público</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 38 -->
+                <a href="noticia38.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia38-1.jpg"
+                        alt="Craque Pito acompanha treino e recebe camisa da Chape Futsal" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">Visita</span>
+                        <div class="card__date">21 de julho de 2026</div>
+                        <h3 class="card__title">Craque Pito acompanha treino e recebe camisa da Chape Futsal</h3>
+                        <p class="card__text">Melhor jogador do mundo em 2023, pivô do Barcelona passa férias em Chapecó e aproveita para ver atividade do Verdão das Quadras</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 37 -->
+                <a href="noticia37.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia37-1.jpg"
+                        alt="Fim de semana de grandes resultados para a Chape Futsal" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">JASC / JUCs</span>
+                        <div class="card__date">20 de julho de 2026</div>
+                        <h3 class="card__title">Fim de semana de grandes resultados para a Chape Futsal</h3>
+                        <p class="card__text">Verdão das Quadras representou o município de Chapecó e a Unochapecó em competições</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 36 -->
+                <a href="noticia36.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia36-1.jpg"
+                        alt="Já é possível garantir ingresso para o segundo jogo da Chape Futsal no Brasileiro" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">17 de julho de 2026</div>
+                        <h3 class="card__title">Já é possível garantir ingresso para o segundo jogo da Chape Futsal no Brasileiro</h3>
+                        <p class="card__text">Após vitória na estreia, o Verdão das Quadras recebe o São João do Jaguaribe (CE), na próxima sexta-feira (24/7)</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 35 -->
+                <a href="noticia35.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia35-1.jpg"
+                        alt="Chape Futsal representa Unochapecó nos Jogos Universitários Catarinenses" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">JUCs</span>
+                        <div class="card__date">15 de julho de 2026</div>
+                        <h3 class="card__title">Chape Futsal representa Unochapecó nos Jogos Universitários Catarinenses</h3>
+                        <p class="card__text">Atletas do grupo sub-20 do Verdão das Quadras estão em Itajaí para a disputa do torneio estadual.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 34 -->
+                <a href="noticia34.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia34-1.jpg"
+                        alt="Lançada a 3ª Feijoada da Chape Futsal com meta de atrair 2,5 mil pessoas" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">Evento</span>
+                        <div class="card__date">14 de julho de 2026</div>
+                        <h3 class="card__title">Lançada a 3ª Feijoada da Chape Futsal com meta de atrair 2,5 mil pessoas</h3>
+                        <p class="card__text">Reunião definiu detalhes do evento de 12 de setembro, com atrações musicais, espaço infantil, exposição de patrocinadores e início das vendas de ingressos.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 33 -->
+                <a href="noticia33.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia33-1.jpg"
+                        alt="Chape Futsal contrata campeão mundial universitário pela seleção brasileira" style="object-position: center 30%;">
+                    <div class="card__body">
+                        <span class="card__tag">Contratação</span>
+                        <div class="card__date">8 de julho de 2026</div>
+                        <h3 class="card__title">Chape Futsal contrata campeão mundial universitário pela seleção brasileira</h3>
+                        <p class="card__text">Pivô Toninho, campeão do Mundial Universitário pela seleção brasileira na Polônia, é o mais novo reforço do Verdão das Quadras.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 32 -->
+                <a href="noticia32.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia32-1.jpg"
+                        alt="Chape Futsal disputa a fase microrregional dos JASC em São Carlos" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">JASC</span>
+                        <div class="card__date">8 de julho de 2026</div>
+                        <h3 class="card__title">Chape Futsal disputa a fase microrregional dos JASC em São Carlos</h3>
+                        <p class="card__text">Verdão das Quadras briga por uma das três vagas à fase regional dos Jogos Abertos de Santa Catarina, no grupo C, em São Carlos.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 31 -->
+                <a href="noticia31.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia31-1.jpg"
+                        alt="Chape Futsal conquista grande vitória na estreia no Brasileiro" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">4 de julho de 2026</div>
+                        <h3 class="card__title">Chape Futsal conquista grande vitória na estreia no Brasileiro</h3>
+                        <p class="card__text">Com o apoio da torcida no SESC, o Verdão das Quadras venceu o Criciúma por 3 a 0 na rodada de abertura.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 30 -->
+                <a href="noticia30.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia30-1.jpg"
+                        alt="Está chegando a hora! Chape Futsal vive a expectativa da estreia no Brasileiro 2026" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">3 de julho de 2026</div>
+                        <h3 class="card__title">Está chegando a hora! Chape Futsal vive a expectativa da estreia no Brasileiro 2026</h3>
+                        <p class="card__text">Chape enfrenta o Criciúma neste sábado (4/7), às 16h, no SESC. Há venda de ingressos, lote extra de sócio e Esquenta da Chape.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 29 -->
+                <a href="noticia29.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia29-1.jpg" alt="Ingressos para estreia da Chape Futsal no Brasileiro já estão à venda" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Ingressos</span>
+                        <div class="card__date">30 de junho de 2026</div>
+                        <h3 class="card__title">Ingressos para estreia da Chape Futsal no Brasileiro já estão à venda</h3>
+                        <p class="card__text">Estreia do Verdão das Quadras no Brasileiro é neste sábado (4/7), às 16h, no SESC, contra o Criciúma.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 28 -->
+                <a href="noticia28.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia28-1.jpg" alt="Na semana do Brasileiro, Chape Futsal abre lote extra de planos de sócio" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Sócio Torcedor</span>
+                        <div class="card__date">29 de junho de 2026</div>
+                        <h3 class="card__title">Na semana do Brasileiro, Chape Futsal abre lote extra de planos de sócio</h3>
+                        <p class="card__text">Mais 100 associações, a R$ 300,00, com camisa oficial e carteirinha para acessar os jogos deste ano.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 27 -->
+                <a href="noticia27.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia27-1.jpg" alt="Chape Futsal empata pela Copa SC, continua na liderança e projeta estreia no Brasileiro" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">27 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal empata pela Copa SC, continua na liderança e projeta estreia no Brasileiro</h3>
+                        <p class="card__text">Verdão das Quadras tem 10 pontos, lidera o grupo A e no próximo sábado (4/7) estreia no Brasileiro.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 26 -->
+                <a href="noticia26.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia26-1.jpg" alt="Chape Futsal recebe Jaraguá em confronto direto pelo primeiro lugar do Catarinense Sub-17" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Catarinense</span>
+                        <div class="card__date">27 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal recebe Jaraguá em confronto direto pelo primeiro lugar do Catarinense Sub-17</h3>
+                        <p class="card__text">Verdão das Quadras assume a liderança em caso de vitória. Jogo neste domingo (28/6), às 18h, no Ginásio Plínio De Nes.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 25 -->
+                <a href="noticia25.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia25-1.jpg" alt="Chape Futsal joga com a missão de defender liderança e carimbar vaga na Copa SC" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">26 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal joga com a missão de defender liderança e carimbar vaga na Copa SC</h3>
+                        <p class="card__text">Verdão das Quadras enfrenta a Apaff/Floripa neste sábado (27/6), no Ginásio Plínio De Nes, às 17h.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 24 -->
+                <a href="noticia24.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia24-1.jpg" alt="Chape Futsal vence e assume liderança de grupo na Copa SC" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">23 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal vence e assume liderança de grupo na Copa SC</h3>
+                        <p class="card__text">Verdão das Quadras ganhou da ADAF/Saudades, em casa, pelo placar de 5 a 2.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 23 -->
+                <a href="noticia23.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia23-1.jpg" alt="Chape Futsal goleia Lages, fora de casa, e volta à liderança da Série Ouro" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">20 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal goleia Lages, fora de casa, e volta à liderança da Série Ouro</h3>
+                        <p class="card__text">Verdão das Quadras aplicou 7 a 2 e está sozinho no topo da tabela de classificação.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 22 -->
+                <a href="noticia22.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia22-1.jpg" alt="Chape Futsal enfrenta Lages e quer buscar a vitória para voltar à liderança da Série Ouro" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">19 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal enfrenta Lages e quer buscar a vitória para voltar à liderança da Série Ouro</h3>
+                        <p class="card__text">Verdão das Quadras joga fora de casa neste sábado (20/6), às 19h30, pela sétima rodada.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 21 -->
+                <a href="noticia21.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia21-1.jpg" alt="Chapecoense Futsal tem agenda definida para o Brasileiro" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Brasileiro</span>
+                        <div class="card__date">17 de junho de 2026</div>
+                        <h3 class="card__title">Chapecoense Futsal tem agenda definida para o Brasileiro</h3>
+                        <p class="card__text">Estreia da equipe verde-branca está marcada para o dia 4 de julho, no SESC Chapecó, diante do time de Criciúma.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 20 -->
+                <a href="noticia20.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia20-1.jpg" alt="Chape Futsal conquista grande vitória pela Copa Santa Catarina" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">14 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal conquista grande vitória pela Copa Santa Catarina</h3>
+                        <p class="card__text">Verdão das Quadras jogou fora de casa contra a Xaxiense/Arvoredo, neste domingo (14/6), e ganhou por 5 a 1.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 19 -->
+                <a href="noticia19.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia19-1.jpg" alt="Chape Futsal enfrenta Xaxiense/Arvoredo pela Copa SC" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">13 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal enfrenta Xaxiense/Arvoredo pela Copa SC</h3>
+                        <p class="card__text">Verdão das Quadras treinou forte para tentar a reabilitação no torneio estadual.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 18 -->
+                <a href="noticia18.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia18-1.jpg" alt="Jogo da Chape Futsal, em Arvoredo, terá ingresso solidário" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">11 de junho de 2026</div>
+                        <h3 class="card__title">Jogo da Chape Futsal, em Arvoredo, terá ingresso solidário</h3>
+                        <p class="card__text">Verdão das Quadras enfrenta a Xaxiense pela Copa SC. Acesso ao ginásio é mediante a entrega de um quilo de alimento não perecível.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 17 -->
+                <a href="noticia17.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia17-1.jpg" alt="Chapecoense Futsal treina forte para desafio pela Copa SC" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">10 de junho de 2026</div>
+                        <h3 class="card__title">Chapecoense Futsal treina forte para desafio pela Copa SC</h3>
+                        <p class="card__text">Verdão das Quadras volta a jogar neste domingo (14), às 16h, fora de casa, contra a Xaxiense/Arvoredo.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 16 -->
+                <a href="noticia16.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia16-1.jpg" alt="Chapecoense Futsal é superada pelo São Lourenço" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">5 de junho de 2026</div>
+                        <h3 class="card__title">Chapecoense Futsal é superada pelo São Lourenço</h3>
+                        <p class="card__text">Verdão das Quadras contou com grande público no ginásio da SER Aurora em partida da Série Ouro do Catarinense.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 15 -->
+                <a href="noticia15.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia15-1.jpg" alt="Atletas da Chape Futsal em treino" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">3 de junho de 2026</div>
+                        <h3 class="card__title">Atletas da Chape Futsal reforçam importância do jogo contra o São Lourenço</h3>
+                        <p class="card__text">Verdão das Quadras joga às 20h desta sexta-feira (5/6), em casa, com a missão de defender a liderança da Série Ouro do Catarinense.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 14 -->
+                <a href="noticia14.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia14-1.jpg" alt="Torcida da Chapecoense Futsal no ginásio" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Série Ouro</span>
+                        <div class="card__date">1 de junho de 2026</div>
+                        <h3 class="card__title">Chape Futsal abre venda de ingressos para jogo que vale liderança</h3>
+                        <p class="card__text">Prefeitura de Chapecó/Chapecoense/Unochapecó recebe São Lourenço nesta sexta-feira (5/6), às 20h, pela Série Ouro do Catarinense.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 13 -->
+                <a href="noticia13.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia13-1.jpg" alt="Chapecoense Futsal é superada na Copa SC" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">27 de maio de 2026</div>
+                        <h3 class="card__title">Chapecoense Futsal é superada na Copa SC e agora foca na Série Ouro</h3>
+                        <p class="card__text">Verdão das Quadras perdeu para a Pinhalense nesta quarta-feira (27). Bom público esteve no ginásio da SER Aurora.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 12 -->
+                <a href="noticia12.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia12-1.jpg" alt="Ingressos para duelo da Chape Futsal contra Pinhalense" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">26 de maio de 2026</div>
+                        <h3 class="card__title">Ingressos para duelo da Chape Futsal contra Pinhalense estão à venda</h3>
+                        <p class="card__text">Há a opção do bilhete solidário em que o torcedor leva um agasalho para ajudar famílias carentes. Apoio do público é fundamental.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 11 -->
+                <a href="noticia11.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia11.jpg" alt="Novo preparador de goleiros" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Comissão Técnica</span>
+                        <div class="card__date">23 de maio de 2026</div>
+                        <h3 class="card__title">Chape Futsal tem novo preparador de goleiros</h3>
+                        <p class="card__text">Leonardo Felipe Nunes, ex-Atlântico e Marau, ambos do Rio Grande do Sul, já está integrado à comissão técnica.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 10 -->
+                <a href="noticia10.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia10.png" alt="Ale Falcone cirurgia" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">D.M.</span>
+                        <div class="card__date">21 de maio de 2026</div>
+                        <h3 class="card__title">Ale Falcone passa por cirurgia e deve voltar em 30 dias</h3>
+                        <p class="card__text">Goleiro da Chape Futsal sofre fratura na mão e já está em processo de recuperação.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 09 -->
+                <a href="noticia09.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia09.webp" alt="Ingresso solidário" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">20 de maio de 2026</div>
+                        <h3 class="card__title">Ingresso solidário: torça pela Chape Futsal e ajude quem precisa</h3>
+                        <p class="card__text">Compre um bilhete a R$ 10 e leve um agasalho. Ação vale para o jogo diante da Pinhalense, pela Copa SC.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 08 -->
+                <a href="noticia08.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia08.webp" alt="Estreia Copa SC" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">16 de maio de 2026</div>
+                        <h3 class="card__title">Em jogo de 9 gols, Chape Futsal estreia com vitória na Copa SC</h3>
+                        <p class="card__text">Verdão das Quadras ganhou de virada do Maravilha, fora de casa, na noite deste sábado (16/5).</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 07 -->
+                <a href="noticia07.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia07.webp" alt="Chapecoense Futsal dose dupla" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Estaduais</span>
+                        <div class="card__date">16 de maio de 2026</div>
+                        <h3 class="card__title">Chapecoense Futsal em dose dupla neste fim de semana</h3>
+                        <p class="card__text">Times adulto e sub-17 jogam por competições estaduais fora de casa em rodadas decisivas.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 06 -->
+                <a href="noticia06.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia06-1.webp" alt="Semana de estreia" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Copa SC</span>
+                        <div class="card__date">13 de maio de 2026</div>
+                        <h3 class="card__title">Semana de estreia para a Chape Futsal na Copa Santa Catarina</h3>
+                        <p class="card__text">Verdão das Quadras está em preparação para enfrentar o Maravilha, pelo primeiro desafio no torneio.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 05 -->
+                <a href="noticia05.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia05.webp" alt="Chape Futsal goleia Blumenau" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Catarinense</span>
+                        <div class="card__date">9 de maio de 2026</div>
+                        <h3 class="card__title">Chape Futsal goleia Blumenau e se isola na liderança da Série Ouro</h3>
+                        <p class="card__text">Verdão das Quadras goleou o Blumenau por 5 a 2 e se isolou na liderança do Campeonato Catarinense.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 04 -->
+                <a href="noticia04.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia04.webp" alt="Na liderança" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Catarinense</span>
+                        <div class="card__date">5 de maio de 2026</div>
+                        <h3 class="card__title">Na liderança da Série Ouro, Chape Futsal intensifica preparação</h3>
+                        <p class="card__text">A Prefeitura de Chapecó/Chapecoense/Unochapecó encara mais um compromisso diante do Blumenau.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 03 -->
+                <a href="noticia03.html" class="card" data-animate data-delay="200" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia03.webp" alt="Torcida verde-branca show" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Supercopa</span>
+                        <div class="card__date">25 de fevereiro de 2026</div>
+                        <h3 class="card__title">Torcida verde-branca dá show na despedida na Supercopa</h3>
+                        <p class="card__text">Com a Barra da Chape nas arquibancadas, o Verdão enfrentou o Joinville pela Supercopa do Brasil.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 02 -->
+                <a href="noticia02.html" class="card" data-animate data-delay="300" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia02.webp" alt="Chape Futsal Atlântico" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Supercopa</span>
+                        <div class="card__date">24 de fevereiro de 2026</div>
+                        <h3 class="card__title">Chape Futsal é superada e faz jogo decisivo contra o Joinville</h3>
+                        <p class="card__text">Na estreia da Supercopa, o Verdão chegou a virar o placar, mas acabou superado pelo Atlântico por 4 a 2.</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Notícia 01 -->
+                <a href="noticia01.html" class="card" data-animate data-delay="100" style="text-decoration: none; display: block; color: inherit;">
+                    <img class="card__image" loading="lazy" decoding="async" src="images/noticias/noticia01.webp" alt="Maior desafio da sua história" style="object-position: center;">
+                    <div class="card__body">
+                        <span class="card__tag">Histórico</span>
+                        <div class="card__date">24 de fevereiro de 2026</div>
+                        <h3 class="card__title">Perto de casa, Chape Futsal encara maior desafio da sua história</h3>
+                        <p class="card__text">Pela primeira vez, o Verdão das Quadras disputa a Supercopa do Brasil, em Erechim (RS).</p>
+                        <span class="card__link">
+                            Ler matéria completa
+                            <span class="material-icons-outlined" style="font-size:16px;" aria-hidden="true">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand__logo">
+                        <img src="images/logomarca-branco.webp" alt="Chapecoense Futsal" width="36" height="36">
+                        Chapecoense Futsal
+                    </div>
+                    <p class="footer-brand__text">A força do oeste catarinense nas quadras do Brasil.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/achapefutsal/" target="_blank" rel="noopener" aria-label="Instagram"><span
+                                class="material-icons-outlined" aria-hidden="true">photo_camera</span></a>
+                        <a href="https://www.youtube.com/@ChapeFutsal" target="_blank" rel="noopener" aria-label="YouTube"><span
+                                class="material-icons-outlined" aria-hidden="true">play_circle</span></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Navegação</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="historia.html">Sobre Nós</a></li>
+                        <li style="display:none;"><a href="elenco.html">Elenco</a></li>
+                        <li><a href="competicoes.html">Competições</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Contato</h4>
+                    <ul>
+                        <li class="footer-contact-item">
+                            <span class="material-icons-outlined" aria-hidden="true">place</span>
+                            Ginásio do SESC<br>Chapecó, SC
+                        </li>
+                        <li class="footer-contact-item">
+                            <span class="material-icons-outlined" aria-hidden="true">email</span>
+                            juridico@chapefutsal.com.br
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-column__title">Parceiros</h4>
+                    <ul>
+                        <li><a href="https://www.cbfs.com.br/" target="_blank" rel="noopener">CBFS</a></li>
+                        <li><a href="https://futsalsc.com.br/" target="_blank" rel="noopener">FCFS</a></li>
+                        <li><a href="https://www.cbfs.com.br/" target="_blank" rel="noopener">CBFS</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Associação Chapecoense de Futsal. Todos os direitos reservados.</span>
+                <div class="footer-bottom__links">
+                  <span>Desenvolvido por <a href="https://swsis.com.br" target="_blank" rel="noopener">SW Sistemas</a></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* Filtro por categoria: lê as tags dos cards já existentes (novas notícias entram sozinhas). */
+        (function () {
+            var list = document.getElementById('news-list');
+            var bar = document.getElementById('news-filter');
+            var chips = document.getElementById('news-filter-chips');
+            var count = document.getElementById('news-filter-count');
+            if (!list || !bar || !chips) return;
+            var cards = Array.prototype.slice.call(list.querySelectorAll(':scope > .card'));
+            var tally = {};
+            cards.forEach(function (c) {
+                var t = c.querySelector('.card__tag');
+                c._tag = t ? t.textContent.trim() : '';
+                if (c._tag) tally[c._tag] = (tally[c._tag] || 0) + 1;
+            });
+            var tags = Object.keys(tally).sort(function (a, b) { return tally[b] - tally[a] || a.localeCompare(b, 'pt-BR'); });
+            function chip(label, value) {
+                var li = document.createElement('li');
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'news-filter__chip';
+                b.setAttribute('aria-pressed', value === '' ? 'true' : 'false');
+                b.dataset.tag = value;
+                b.textContent = label;
+                li.appendChild(b);
+                chips.appendChild(li);
+            }
+            chip('Todas', '');
+            tags.forEach(function (t) { chip(t, t); });
+            function apply(tag) {
+                var n = 0;
+                cards.forEach(function (c) {
+                    var show = !tag || c._tag === tag;
+                    c.hidden = !show;
+                    if (show) n++;
+                });
+                list.classList.toggle('is-all', !tag);
+                count.textContent = tag
+                    ? n + (n === 1 ? ' notícia em ' : ' notícias em ') + tag
+                    : '';
+            }
+            chips.addEventListener('click', function (e) {
+                var b = e.target.closest('.news-filter__chip');
+                if (!b) return;
+                Array.prototype.forEach.call(chips.querySelectorAll('.news-filter__chip'), function (x) {
+                    x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+                });
+                apply(b.dataset.tag);
+            });
+            bar.hidden = false;
+        })();
+    </script>
+@endpush
