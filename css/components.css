@@ -2321,9 +2321,13 @@
 }
 
 .honors-strip__list {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
     gap: var(--space-4);
+}
+
+.honors-strip__list > .honor {
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 .honor {
@@ -2371,34 +2375,35 @@ a.honor:hover {
     font-weight: 600;
 }
 
-.honor--new {
-    background: rgba(255, 255, 255, 0.16);
-    border-color: var(--color-primary-lightest);
+/* Conquistas da temporada atual: card mais largo e realçado */
+.honors-strip__list > .honor--highlight {
+    flex-grow: 1.35;
 }
 
-.honor__badge {
-    position: absolute;
-    top: calc(var(--space-3) * -1);
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 2px var(--space-3);
-    border-radius: 999px;
-    background: var(--color-primary-lightest);
-    color: var(--color-green-dark);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
+.honor--highlight {
+    background: rgba(255, 255, 255, 0.18);
+    border: 2px solid var(--color-primary-lightest);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.honor--highlight .honor__icon {
+    font-size: 44px;
+    color: #fff;
+}
+
+.honor--highlight .honor__year {
+    color: var(--color-primary-lightest);
+    font-size: var(--font-size-sm);
+}
+
+.honor--highlight .honor__title {
+    font-size: var(--font-size-lg);
 }
 
 @media (max-width: 900px) {
     .honors-strip__list {
+        display: grid;
         grid-template-columns: repeat(2, 1fr);
         row-gap: var(--space-6);
-    }
-
-    .honor--new {
-        grid-column: 1 / -1;
     }
 }

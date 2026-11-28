@@ -115,13 +115,7 @@ function cycleBanner(layers, visibleDuration, exitDuration) {
 /* ---------- Announcement bar (topo de todas as páginas) ----------
    Para trocar o aviso, altere ANNOUNCE (e o id, para reexibir a quem fechou).
    Para remover, defina ANNOUNCE = null. */
-const ANNOUNCE = {
-    id: 'vice-copa-sul-2026',
-    href: 'noticia81.html',
-    title: 'Vice-campeã da Copa Sul 2026',
-    detail: 'Primeira final da história em competição da CBFS',
-    cta: 'Ler matéria'
-};
+const ANNOUNCE = null;
 
 function initAnnounceBar() {
     if (!ANNOUNCE) return;
